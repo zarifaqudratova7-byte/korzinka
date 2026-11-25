@@ -1,0 +1,3360 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Korzinka Go — Yirik Onlayn Platforma</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-page: #ffffff;
+      --bg-soft: #f8f9fb;
+      --bg-muted: #f1f3f7;
+      --ink-primary: #111827;
+      --ink-secondary: #4b5563;
+      --ink-muted: #6b7280;
+      --brand-red: #e11d48;
+      --brand-red-dark: #be123c;
+      --brand-red-soft: #fff1f2;
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --spring: cubic-bezier(0.22, 1.2, 0.36, 1);
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--ink-primary);
+      font-variant-numeric: tabular-nums;
+      overflow-x: hidden;
+    }
+
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .kg-card {
+      transition: transform 0.3s var(--spring), box-shadow 0.28s var(--ease-out), border-color 0.2s ease;
+    }
+    .kg-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 36px -14px rgba(17, 24, 39, 0.14), 0 6px 14px -4px rgba(225, 29, 72, 0.14);
+      border-color: #fda4af;
+    }
+    .kg-card:hover .kg-card-img {
+      transform: scale(1.07);
+    }
+    .kg-card-img {
+      transition: transform 0.42s var(--spring);
+    }
+
+    .kg-btn {
+      transition: transform 0.22s var(--spring), background-color 0.18s ease, box-shadow 0.22s ease, border-color 0.18s ease;
+    }
+    .kg-btn:hover {
+      transform: translateY(-1px);
+    }
+    .kg-btn:active {
+      transform: scale(0.96);
+    }
+
+    @keyframes shimmerSweep {
+      0% { transform: translateX(-140%); }
+      65%, 100% { transform: translateX(220%); }
+    }
+    .shimmer-badge {
+      position: relative;
+      overflow: hidden;
+    }
+    .shimmer-badge::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      width: 45%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+      animation: shimmerSweep 3.2s infinite ease-in-out;
+    }
+
+    @keyframes softPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.35); opacity: 0.65; }
+    }
+    .pulse-dot {
+      animation: softPulse 2s infinite ease-in-out;
+    }
+
+    @keyframes viewReveal {
+      from { transform: translateY(8px); }
+      to { transform: translateY(0); }
+    }
+    .view-reveal {
+      animation: viewReveal 0.28s var(--ease-out) both;
+    }
+
+    @keyframes modalScaleIn {
+      from { opacity: 0; transform: scale(0.95) translateY(8px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-scale-in {
+      animation: modalScaleIn 0.26s var(--spring) both;
+    }
+
+    @keyframes popBump {
+      0% { transform: scale(1); }
+      45% { transform: scale(1.22); }
+      100% { transform: scale(1); }
+    }
+    .pop-bump {
+      animation: popBump 0.32s var(--spring);
+    }
+
+    .drawer-backdrop {
+      transition: opacity 0.24s ease;
+    }
+    .drawer-panel {
+      transition: transform 0.32s var(--spring);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#ffffff] text-[#111827] antialiased selection:bg-[#e11d48] selection:text-white">
+
+  <!-- TOP UTILITY BAR -->
+  <div class="border-b border-gray-100 bg-[#f8f9fb] text-xs text-[#4b5563]">
+    <div class="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-2 px-4 py-2 sm:px-6">
+      <div class="flex items-center gap-2 font-medium">
+        <span class="pulse-dot inline-block h-2 w-2 rounded-full bg-[#10b981]"></span>
+        <span>Tezkor yetkazish: <strong class="text-[#111827]">35–50 daq</strong> • <strong class="text-[#10b981]">150 000 so'm</strong>dan BEPUL</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-2 text-[11px] font-semibold">
+        <span class="rounded-full border border-rose-200 bg-[#fff1f2] px-2.5 py-0.5 text-[#be123c]">
+          Promokod: <strong class="font-mono">KORZINKA26</strong> (-15%)
+        </span>
+        <span class="hidden rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-amber-800 sm:inline-block">
+          <strong class="font-mono">MEGA50</strong> (-25 000 so'm)
+        </span>
+        <span class="hidden md:inline text-[#6b7280]">Call-markaz: <strong class="text-[#111827]">+998 78 140 14 14</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STICKY HEADER & PORTAL NAVIGATION -->
+  <header class="sticky top-0 z-40 border-b border-gray-200/80 bg-white/95 backdrop-blur-md">
+    <div class="mx-auto max-w-[1440px] px-4 py-3 sm:px-6">
+      <div class="flex items-center justify-between gap-2.5 sm:gap-4">
+
+        <!-- Brand Logo -->
+        <button
+          type="button"
+          id="brandLogoBtn"
+          class="kg-btn flex shrink-0 items-center gap-2.5 text-left cursor-pointer"
+        >
+          <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#e11d48] text-white shadow-sm shadow-rose-600/25">
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 7h14l-1.4 10.8a2 2 0 0 1-2 1.7H8.4a2 2 0 0 1-2-1.7L5 7z" />
+              <path d="M9 7V5a3 3 0 0 1 6 0v2" />
+              <path d="M10 11.5v4M14 11.5v4" />
+            </svg>
+          </div>
+          <div class="leading-none">
+            <div class="flex items-center gap-1.5">
+              <span class="text-lg font-black tracking-tight text-[#111827] sm:text-xl">korzinka</span>
+              <span class="shimmer-badge rounded-lg bg-[#e11d48] px-1.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-white">GO</span>
+            </div>
+            <span class="mt-0.5 block text-[11px] font-medium text-[#6b7280]">Yirik Onlayn Platforma</span>
+          </div>
+        </button>
+
+        <!-- District Selector (Desktop) -->
+        <div class="hidden lg:flex items-center">
+          <label for="districtSelect" class="sr-only">Tuman tanlash</label>
+          <div class="flex items-center gap-1.5 rounded-2xl border border-gray-200 bg-[#f8f9fb] px-3 py-2 text-xs font-bold text-[#111827] hover:border-rose-300">
+            <span class="text-[#e11d48]">📍</span>
+            <select
+              id="districtSelect"
+              class="cursor-pointer bg-transparent font-bold text-[#111827] outline-none"
+            >
+              <option value="Yunusobod">Yunusobod</option>
+              <option value="Chilonzor">Chilonzor</option>
+              <option value="Mirzo Ulug'bek">Mirzo Ulug'bek</option>
+              <option value="Yakkasaroy">Yakkasaroy</option>
+              <option value="Shayxontohur">Shayxontohur</option>
+              <option value="Sergeli">Sergeli</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Live Search Bar -->
+        <div id="searchContainer" class="relative hidden flex-1 sm:block max-w-xl">
+          <span class="pointer-events-none absolute inset-y-0 left-3.5 flex items-center text-sm text-[#6b7280]">🔍</span>
+          <input
+            id="searchInput"
+            type="text"
+            autocomplete="off"
+            placeholder="Mahsulot, kategoriya yoki tarkib qidiring (masalan: sut, olma, go'sht)..."
+            class="w-full rounded-2xl border border-gray-200 bg-[#f8f9fb] py-2.5 pl-10 pr-9 text-sm font-medium text-[#111827] placeholder-[#6b7280] outline-none transition focus:border-[#e11d48] focus:bg-white focus:ring-4 focus:ring-rose-500/10"
+          />
+          <button
+            type="button"
+            id="clearSearchBtn"
+            aria-label="Qidiruvni tozalash"
+            class="hidden absolute inset-y-0 right-2.5 flex items-center px-1.5 text-xs font-bold text-[#6b7280] hover:text-[#e11d48] cursor-pointer"
+          >
+            ✕
+          </button>
+
+          <div
+            id="searchDropdown"
+            class="hidden absolute left-0 right-0 top-[calc(100%+8px)] z-50 max-h-[380px] overflow-y-auto rounded-2xl border border-gray-200 bg-white p-3 shadow-xl"
+          ></div>
+        </div>
+
+        <!-- Right Controls: Korzinka Plus, Sevimlilar, Savat -->
+        <div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
+          <button
+            type="button"
+            id="openPlusModalBtn"
+            class="kg-btn hidden md:flex items-center gap-1.5 rounded-2xl border border-amber-200 bg-amber-50/80 px-3 py-2.5 text-xs font-extrabold text-[#111827] hover:border-amber-400 hover:bg-amber-100/70 cursor-pointer"
+          >
+            <span class="text-sm text-[#f59e0b]">★</span>
+            <span>Korzinka Plus</span>
+            <span id="headerBonusPill" class="rounded-full bg-white px-2 py-0.5 text-[10px] font-black text-amber-800 border border-amber-200 tabular-nums">
+              32 500
+            </span>
+          </button>
+
+          <button
+            type="button"
+            id="openFavoritesBtn"
+            class="kg-btn flex items-center gap-1.5 rounded-2xl border border-gray-200 bg-white px-2.5 py-2.5 text-xs font-bold text-[#111827] hover:border-rose-300 hover:bg-[#fff1f2] sm:px-3 cursor-pointer"
+          >
+            <span class="text-sm text-[#e11d48]">♥</span>
+            <span class="hidden xl:inline">Sevimlilar</span>
+            <span
+              id="favCountBadge"
+              class="tabular-nums flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#fff1f2] px-1.5 text-[11px] font-black text-[#e11d48]"
+            >
+              0
+            </span>
+          </button>
+
+          <button
+            type="button"
+            id="openCartBtn"
+            class="kg-btn flex items-center gap-2 rounded-2xl bg-[#e11d48] px-3 py-2.5 text-white shadow-sm shadow-rose-600/25 hover:bg-[#be123c] sm:px-3.5 cursor-pointer"
+          >
+            <span class="text-base leading-none">🛒</span>
+            <span class="text-xs font-extrabold">Savat</span>
+            <span
+              id="cartCountBadge"
+              class="tabular-nums flex h-5 min-w-[20px] items-center justify-center rounded-full bg-white px-1.5 text-[11px] font-black text-[#e11d48]"
+            >
+              0
+            </span>
+            <span id="cartHeaderTotal" class="tabular-nums hidden text-xs font-black sm:inline">0 so'm</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile District + Search Bar -->
+      <div class="mt-2.5 flex items-center gap-2 sm:hidden">
+        <select
+          id="mobileDistrictSelect"
+          aria-label="Tuman tanlash"
+          class="rounded-xl border border-gray-200 bg-[#f8f9fb] px-2.5 py-2 text-xs font-bold text-[#111827] outline-none focus:border-[#e11d48]"
+        >
+          <option value="Yunusobod">📍 Yunusobod</option>
+          <option value="Chilonzor">📍 Chilonzor</option>
+          <option value="Mirzo Ulug'bek">📍 Mirzo Ulug'bek</option>
+          <option value="Yakkasaroy">📍 Yakkasaroy</option>
+          <option value="Shayxontohur">📍 Shayxontohur</option>
+          <option value="Sergeli">📍 Sergeli</option>
+        </select>
+
+        <div class="relative flex-1">
+          <input
+            id="mobileSearchInput"
+            type="text"
+            placeholder="Mahsulot qidiring..."
+            class="w-full rounded-xl border border-gray-200 bg-[#f8f9fb] py-2 pl-3 pr-8 text-xs font-medium text-[#111827] placeholder-[#6b7280] outline-none focus:border-[#e11d48] focus:bg-white"
+          />
+          <button
+            type="button"
+            id="mobileClearSearchBtn"
+            aria-label="Qidiruvni tozalash"
+            class="hidden absolute inset-y-0 right-2 flex items-center px-1 text-xs font-bold text-[#6b7280] hover:text-[#e11d48]"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- 5 Portal View Tabs -->
+      <nav aria-label="Portal bo'limlari" class="no-scrollbar mt-3 flex items-center justify-between gap-2 overflow-x-auto border-t border-gray-100 pt-2.5">
+        <div class="flex items-center gap-1.5">
+          <button
+            type="button"
+            data-tab="supermarket"
+            class="portal-tab kg-btn shrink-0 rounded-xl bg-[#e11d48] px-3.5 py-2 text-xs font-extrabold text-white shadow-xs cursor-pointer"
+          >
+            Supermarket
+          </button>
+          <button
+            type="button"
+            data-tab="aksiyalar"
+            class="portal-tab kg-btn shrink-0 rounded-xl bg-[#f8f9fb] px-3.5 py-2 text-xs font-bold text-[#4b5563] hover:bg-[#fff1f2] hover:text-[#e11d48] cursor-pointer"
+          >
+            Aksiyalar
+          </button>
+          <button
+            type="button"
+            data-tab="dokonlar"
+            class="portal-tab kg-btn shrink-0 rounded-xl bg-[#f8f9fb] px-3.5 py-2 text-xs font-bold text-[#4b5563] hover:bg-[#fff1f2] hover:text-[#e11d48] cursor-pointer"
+          >
+            Do'konlar &amp; Xarita
+          </button>
+          <button
+            type="button"
+            data-tab="vakansiyalar"
+            class="portal-tab kg-btn shrink-0 rounded-xl bg-[#f8f9fb] px-3.5 py-2 text-xs font-bold text-[#4b5563] hover:bg-[#fff1f2] hover:text-[#e11d48] cursor-pointer"
+          >
+            Vakansiyalar
+          </button>
+          <button
+            type="button"
+            data-tab="kabinetim"
+            class="portal-tab kg-btn shrink-0 rounded-xl bg-[#f8f9fb] px-3.5 py-2 text-xs font-bold text-[#4b5563] hover:bg-[#fff1f2] hover:text-[#e11d48] cursor-pointer"
+          >
+            Kabinetim
+          </button>
+        </div>
+
+        <button
+          type="button"
+          id="mobilePlusModalBtn"
+          class="md:hidden shrink-0 rounded-xl border border-amber-200 bg-amber-50 px-3 py-1.5 text-[11px] font-extrabold text-amber-900 cursor-pointer"
+        >
+          ★ Plus
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN PORTAL WORKSPACE -->
+  <main class="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 pb-20">
+
+    <!-- ==================== TAB 1: SUPERMARKET ==================== -->
+    <div id="view-supermarket" class="portal-view view-reveal space-y-10">
+
+      <!-- 8 Circular Story Highlights -->
+      <section aria-label="Tezkor hikoyalar">
+        <div id="storiesStrip" class="no-scrollbar flex items-start gap-4 overflow-x-auto pb-1"></div>
+      </section>
+
+      <!-- Hero Bento Grid -->
+      <section class="grid grid-cols-1 gap-5 lg:grid-cols-12">
+        <!-- 4-Slide Promo Carousel -->
+        <div class="relative min-h-[340px] overflow-hidden rounded-3xl border border-gray-200/90 bg-[#111827] shadow-md lg:col-span-8 sm:min-h-[410px]">
+          <div id="heroSlideContent" class="h-full w-full"></div>
+
+          <div class="absolute bottom-4 left-5 right-5 z-20 flex items-center justify-between">
+            <div id="heroDots" class="flex items-center gap-2"></div>
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                id="heroPrevBtn"
+                aria-label="Oldingi slayd"
+                class="kg-btn flex h-9 w-9 items-center justify-center rounded-full border border-white/40 bg-white/95 text-sm font-black text-[#111827] shadow hover:bg-[#e11d48] hover:text-white cursor-pointer"
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                id="heroNextBtn"
+                aria-label="Keyingi slayd"
+                class="kg-btn flex h-9 w-9 items-center justify-center rounded-full border border-white/40 bg-white/95 text-sm font-black text-[#111827] shadow hover:bg-[#e11d48] hover:text-white cursor-pointer"
+              >
+                ›
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Stacked Bento Cards -->
+        <div class="flex flex-col gap-4 lg:col-span-4">
+          <div class="kg-card flex flex-1 flex-col justify-between rounded-3xl border border-rose-200 bg-gradient-to-br from-[#fff1f2] via-white to-white p-4 shadow-sm sm:p-5">
+            <div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="shimmer-badge inline-flex items-center gap-1 rounded-full bg-[#e11d48] px-3 py-1 text-[10px] font-black uppercase tracking-wider text-white">
+                  ⚡ Kunlik Turbo Chegirma
+                </span>
+                <span
+                  id="turboCountdown"
+                  class="tabular-nums rounded-xl bg-[#111827] px-2.5 py-1 font-mono text-xs font-extrabold text-white"
+                >
+                  04:18:45
+                </span>
+              </div>
+
+              <div class="mt-3.5 flex items-center gap-3.5 rounded-2xl border border-gray-100 bg-white p-3 shadow-2xs">
+                <img
+                  id="turboProductImg"
+                  alt="Kunlik Turbo Chegirma mahsuloti"
+                  class="h-20 w-20 shrink-0 rounded-xl border border-gray-100 bg-[#f8f9fb] object-cover"
+                />
+                <div class="min-w-0 flex-1">
+                  <span class="rounded-md bg-[#fff1f2] px-2 py-0.5 text-[10px] font-black text-[#e11d48] tabular-nums">-28% CHEGIRMA</span>
+                  <h2 id="turboProductTitle" class="mt-1 truncate text-sm font-extrabold text-[#111827]">
+                    Mol go'shti lahm (1 kg)
+                  </h2>
+                  <div class="mt-0.5 flex items-baseline gap-2 tabular-nums">
+                    <span id="turboProductPrice" class="text-sm font-black text-[#e11d48]">84 900 so'm</span>
+                    <span id="turboProductOldPrice" class="text-[11px] font-medium text-[#6b7280] line-through">118 000 so'm</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-3.5 flex items-center gap-2">
+              <button
+                type="button"
+                id="turboJumpBtn"
+                class="kg-btn flex-1 rounded-xl border border-rose-200 bg-white py-2.5 text-xs font-extrabold text-[#be123c] hover:bg-[#fff1f2] cursor-pointer"
+              >
+                Chegirmalar
+              </button>
+              <button
+                type="button"
+                id="turboAddBtn"
+                class="kg-btn flex-1 rounded-xl bg-[#e11d48] py-2.5 text-xs font-extrabold text-white shadow-xs hover:bg-[#be123c] cursor-pointer"
+              >
+                + Savatga
+              </button>
+            </div>
+          </div>
+
+          <div class="kg-card rounded-3xl border border-gray-200/90 bg-[#f8f9fb] p-4 shadow-sm sm:p-5">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-extrabold text-emerald-800">
+                  <span class="h-1.5 w-1.5 rounded-full bg-[#10b981]"></span>
+                  35–50 DAQIQADA YETKAZISH
+                </span>
+                <h3 class="mt-2 text-sm font-extrabold text-[#111827]">
+                  Tezkor Yetkazish • <span id="expressDistrictName">Yunusobod</span>
+                </h3>
+                <p class="mt-0.5 text-xs text-[#4b5563]">
+                  150 000 so'mdan bepul • Har xaridda <strong class="text-[#f59e0b]">Korzinka Plus</strong> bonusi.
+                </p>
+              </div>
+              <button
+                type="button"
+                id="bentoPlusTrigger"
+                class="kg-btn shrink-0 rounded-2xl border border-amber-200 bg-white px-3 py-2 text-xs font-extrabold text-[#111827] shadow-2xs hover:border-amber-400 cursor-pointer"
+              >
+                ★ Plus
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 12 Category Pills + Filters + Sort + 64 Products Grid -->
+      <section class="space-y-4">
+        <div class="space-y-3">
+          <div id="categoryPillsContainer" class="no-scrollbar flex items-center gap-2 overflow-x-auto pb-1"></div>
+
+          <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-gray-200/80 bg-[#f8f9fb] px-4 py-2.5">
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+              <span id="productCountLabel" class="tabular-nums text-xs font-extrabold text-[#111827]">64 ta mahsulot</span>
+              <span class="text-gray-300">|</span>
+
+              <button
+                type="button"
+                id="toggleDiscountOnlyBtn"
+                class="kg-btn rounded-xl border border-gray-200 bg-white px-3 py-1.5 text-xs font-bold text-[#4b5563] hover:border-rose-300 hover:text-[#e11d48] cursor-pointer"
+              >
+                🏷️ Faqat chegirmali
+              </button>
+
+              <button
+                type="button"
+                id="toggleInStockOnlyBtn"
+                class="kg-btn rounded-xl border border-emerald-200 bg-emerald-50/70 px-3 py-1.5 text-xs font-bold text-emerald-800 hover:bg-emerald-100 cursor-pointer"
+              >
+                ✓ Omborda mavjud
+              </button>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <label for="sortSelect" class="text-xs font-semibold text-[#6b7280]">Saralash:</label>
+              <select
+                id="sortSelect"
+                class="cursor-pointer rounded-xl border border-gray-200 bg-white px-3 py-1.5 text-xs font-extrabold text-[#111827] outline-none focus:border-[#e11d48]"
+              >
+                <option value="popular">Mashhur</option>
+                <option value="price-asc">Arzonroq</option>
+                <option value="price-desc">Qimmatroq</option>
+                <option value="discount-desc">Chegirma %</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div id="productsGrid" class="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-6"></div>
+
+        <div id="emptyProductsBox" class="hidden rounded-3xl border border-gray-200 bg-[#f8f9fb] px-6 py-14 text-center">
+          <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#fff1f2] text-2xl">🛍️</div>
+          <h3 class="mt-3 text-base font-extrabold text-[#111827]">Mos mahsulot topilmadi</h3>
+          <p class="mt-1 text-xs text-[#6b7280]">Qidiruv so'zini o'zgartiring yoki filtrlarni tozalang.</p>
+          <button
+            type="button"
+            id="resetAllFiltersBtn"
+            class="kg-btn mt-4 rounded-xl bg-[#e11d48] px-4 py-2 text-xs font-extrabold text-white hover:bg-[#be123c] cursor-pointer"
+          >
+            Barcha filtrlarni tiklash
+          </button>
+        </div>
+      </section>
+
+      <!-- 4 Curated Ready-to-Buy Bundles -->
+      <section class="rounded-3xl border border-gray-200/90 bg-[#f8f9fb] p-5 sm:p-7">
+        <div class="mb-5 flex flex-wrap items-end justify-between gap-2">
+          <div>
+            <span class="rounded-full bg-[#fff1f2] px-3 py-1 text-[10px] font-black uppercase tracking-wider text-[#e11d48]">TAYYOR TO'PLAMLAR</span>
+            <h2 class="mt-2 text-xl font-extrabold text-[#111827] sm:text-2xl">Oila va Mehmonlar uchun To'plamlar</h2>
+            <p class="text-xs text-[#4b5563]">Bir bosishda barcha mahsulotlarni savatga qo'shing</p>
+          </div>
+        </div>
+        <div id="bundlesGrid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"></div>
+      </section>
+    </div>
+
+    <!-- ==================== TAB 2: AKSIYALAR ==================== -->
+    <section id="view-aksiyalar" class="portal-view view-reveal hidden space-y-8">
+      <div class="rounded-3xl border border-rose-200 bg-gradient-to-r from-[#e11d48] via-[#be123c] to-[#9f1239] p-6 text-white shadow-sm sm:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <span class="shimmer-badge rounded-full bg-white/15 px-3 py-1 text-[10px] font-black uppercase tracking-wider">
+            MAXSUS AKSIYALAR &amp; PROMOKODLAR
+          </span>
+          <span class="tabular-nums rounded-full bg-white/15 px-3 py-1 font-mono text-xs font-bold">
+            Turbo tugashiga: <span id="promoTabTimer">04:18:45</span>
+          </span>
+        </div>
+        <h2 class="mt-3 text-2xl font-black sm:text-3xl">Haftalik Chegirmalar, Promokodlar va To'plamlar</h2>
+        <p class="mt-1 max-w-2xl text-xs text-rose-100 sm:text-sm">
+          Promokodni nusxalang va savatda darhol qo'llang. 150 000 so'mdan yuqori xaridlarga yetkazish BEPUL.
+        </p>
+
+        <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/20 bg-white/10 p-4 backdrop-blur-xs">
+            <div>
+              <div class="font-mono text-base font-black tracking-wide text-white">KORZINKA26</div>
+              <div class="text-xs text-rose-100">Savatdagi umumiy summaga <strong class="text-white">-15% chegirma</strong></div>
+            </div>
+            <button
+              type="button"
+              data-promo="KORZINKA26"
+              class="promo-use-btn kg-btn rounded-xl bg-white px-4 py-2 text-xs font-black text-[#e11d48] hover:bg-rose-50 cursor-pointer"
+            >
+              Qo'llash va nusxalash
+            </button>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/20 bg-white/10 p-4 backdrop-blur-xs">
+            <div>
+              <div class="font-mono text-base font-black tracking-wide text-white">MEGA50</div>
+              <div class="text-xs text-rose-100">Buyurtma summasidan <strong class="text-white">-25 000 so'm</strong> chegirma</div>
+            </div>
+            <button
+              type="button"
+              data-promo="MEGA50"
+              class="promo-use-btn kg-btn rounded-xl bg-white px-4 py-2 text-xs font-black text-[#e11d48] hover:bg-rose-50 cursor-pointer"
+            >
+              Qo'llash va nusxalash
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-lg font-extrabold text-[#111827] sm:text-xl">Chegirmadagi Mahsulotlar</h3>
+          <span id="promoProductsBadge" class="tabular-nums rounded-full bg-[#fff1f2] px-3 py-1 text-xs font-black text-[#e11d48]">0 ta</span>
+        </div>
+        <div id="promoProductsGrid" class="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-6"></div>
+      </div>
+
+      <div class="rounded-3xl border border-gray-200 bg-[#f8f9fb] p-5 sm:p-6">
+        <h3 class="text-lg font-extrabold text-[#111827]">Aksiya To'plamlari</h3>
+        <div id="promoBundlesGrid" class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"></div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: DO'KONLAR & XARITA ==================== -->
+    <section id="view-dokonlar" class="portal-view view-reveal hidden space-y-6">
+      <div>
+        <span class="rounded-full bg-[#fff1f2] px-3 py-1 text-[10px] font-black uppercase tracking-wider text-[#e11d48]">FILIALLAR TARMOG'I</span>
+        <h2 class="mt-2 text-2xl font-black text-[#111827] sm:text-3xl">Toshkent Do'konlari va Interaktiv Xarita</h2>
+        <p class="mt-1 text-xs text-[#4b5563] sm:text-sm">
+          Xaritadagi filial markerini yoki yon ro'yxatdagi do'konni bosing — faol tuman va yetkazish manzili yangilanadi.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <div class="rounded-3xl border border-gray-200 bg-white p-4 shadow-sm lg:col-span-7 sm:p-5">
+          <div class="mb-3 flex flex-wrap items-center justify-between gap-2 text-xs font-bold">
+            <span class="text-[#111827]">🗺️ Toshkent Filiallari Xaritasi</span>
+            <span id="activeMapPinLabel" class="rounded-full bg-[#fff1f2] px-3 py-1 text-[#e11d48]">Yunusobod</span>
+          </div>
+
+          <svg id="tashkentBranchesSvg" viewBox="0 0 720 420" class="h-auto w-full rounded-2xl border border-gray-200 bg-[#f8f9fb] select-none">
+            <rect x="0" y="0" width="720" height="420" fill="#f8f9fb" />
+            <circle cx="360" cy="210" r="145" fill="none" stroke="#e5e7eb" stroke-width="8" stroke-dasharray="9 6" />
+            <circle cx="360" cy="210" r="76" fill="none" stroke="#fecdd3" stroke-width="4" />
+            <line x1="40" y1="130" x2="680" y2="130" stroke="#e5e7eb" stroke-width="5" />
+            <line x1="40" y1="285" x2="680" y2="285" stroke="#e5e7eb" stroke-width="5" />
+            <line x1="230" y1="25" x2="230" y2="395" stroke="#e5e7eb" stroke-width="5" />
+            <line x1="485" y1="25" x2="485" y2="395" stroke="#e5e7eb" stroke-width="5" />
+
+            <text x="360" y="46" text-anchor="middle" fill="#6b7280" font-size="11" font-weight="800" letter-spacing="1.2">YUNUSOBOD</text>
+            <text x="115" y="268" text-anchor="middle" fill="#6b7280" font-size="11" font-weight="800" letter-spacing="1.2">CHILONZOR</text>
+            <text x="585" y="110" text-anchor="middle" fill="#6b7280" font-size="11" font-weight="800" letter-spacing="1.2">MIRZO ULUG'BEK</text>
+            <text x="585" y="270" text-anchor="middle" fill="#6b7280" font-size="11" font-weight="800" letter-spacing="1.2">SHAYXONTOHUR</text>
+            <text x="360" y="385" text-anchor="middle" fill="#6b7280" font-size="11" font-weight="800" letter-spacing="1.2">SERGELI</text>
+
+            <g id="svgBranchPinsLayer"></g>
+          </svg>
+        </div>
+
+        <div class="space-y-4 lg:col-span-5">
+          <div id="selectedBranchCard" class="rounded-3xl border border-rose-200 bg-[#fff1f2]/60 p-5"></div>
+          <div id="branchesListBox" class="max-h-[340px] space-y-2.5 overflow-y-auto pr-1"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: VAKANSIYALAR ==================== -->
+    <section id="view-vakansiyalar" class="portal-view view-reveal hidden space-y-6">
+      <div class="flex flex-col justify-between gap-4 rounded-3xl border border-gray-200 bg-[#f8f9fb] p-6 sm:flex-row sm:items-center">
+        <div>
+          <span class="rounded-full bg-[#fff1f2] px-3 py-1 text-[10px] font-black uppercase tracking-wider text-[#e11d48]">KARYERA VA JAMOA</span>
+          <h2 class="mt-2 text-2xl font-black text-[#111827] sm:text-3xl">Toshkentdagi Ochiq Vakansiyalar</h2>
+          <p class="mt-1 text-xs text-[#4b5563] sm:text-sm">
+            Rasmiy ishga joylashish, oylik bonuslar va Korzinka Plus imtiyozlari.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-1.5">
+          <button type="button" data-job-cat="Barchasi" class="job-filter-btn kg-btn rounded-xl bg-[#e11d48] px-3.5 py-2 text-xs font-extrabold text-white cursor-pointer">Barchasi</button>
+          <button type="button" data-job-cat="Supermarket" class="job-filter-btn kg-btn rounded-xl border border-gray-200 bg-white px-3.5 py-2 text-xs font-bold text-[#4b5563] hover:border-rose-300 cursor-pointer">Supermarket</button>
+          <button type="button" data-job-cat="Logistika" class="job-filter-btn kg-btn rounded-xl border border-gray-200 bg-white px-3.5 py-2 text-xs font-bold text-[#4b5563] hover:border-rose-300 cursor-pointer">Logistika</button>
+          <button type="button" data-job-cat="IT" class="job-filter-btn kg-btn rounded-xl border border-gray-200 bg-white px-3.5 py-2 text-xs font-bold text-[#4b5563] hover:border-rose-300 cursor-pointer">IT</button>
+        </div>
+      </div>
+
+      <div id="vacanciesGrid" class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
+    </section>
+
+    <!-- ==================== TAB 5: KABINETIM ==================== -->
+    <section id="view-kabinetim" class="portal-view view-reveal hidden space-y-6">
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <div class="space-y-4 lg:col-span-5">
+          <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-xs">
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3.5">
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#e11d48] text-lg font-black text-white shadow-xs">
+                  <span id="cabinetUserInitials">AK</span>
+                </div>
+                <div>
+                  <h2 id="cabinetUserNameDisplay" class="text-lg font-extrabold text-[#111827]">Azizbek Karimov</h2>
+                  <p class="text-xs text-[#6b7280]"><span id="cabinetUserPhoneDisplay">+998 90 987 65 43</span> • <span id="cabinetActiveDistrict" class="font-bold text-[#111827]">Yunusobod</span></p>
+                </div>
+              </div>
+              <button
+                type="button"
+                id="cabinetPlusBtn"
+                class="kg-btn rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-extrabold text-amber-900 cursor-pointer"
+              >
+                ★ Karta
+              </button>
+            </div>
+
+            <!-- Inline Profile Editor -->
+            <form id="cabinetProfileForm" class="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+              <input
+                id="cabinetProfileNameInput"
+                type="text"
+                value="Azizbek Karimov"
+                placeholder="Ism-familiya"
+                class="rounded-xl border border-gray-200 bg-[#f8f9fb] px-3 py-2 text-xs font-bold text-[#111827] outline-none focus:border-[#e11d48] focus:bg-white"
+              />
+              <div class="flex gap-2">
+                <input
+                  id="cabinetProfilePhoneInput"
+                  type="tel"
+                  value="+998 90 987 65 43"
+                  placeholder="Telefon"
+                  class="w-full rounded-xl border border-gray-200 bg-[#f8f9fb] px-3 py-2 text-xs font-bold text-[#111827] outline-none focus:border-[#e11d48] focus:bg-white"
+                />
+                <button type="submit" class="kg-btn shrink-0 rounded-xl bg-[#111827] px-3 py-2 text-xs font-extrabold text-white hover:bg-[#e11d48] cursor-pointer">
+                  Saqlash
+                </button>
+              </div>
+            </form>
+
+            <div class="mt-4 rounded-2xl bg-gradient-to-br from-[#111827] via-[#1f2937] to-[#be123c] p-5 text-white">
+              <div class="flex items-center justify-between text-xs text-rose-100">
+                <span class="font-extrabold tracking-wide">KORZINKA PLUS BONUS</span>
+                <span class="font-mono">8600 •••• 7740</span>
+              </div>
+              <div id="cabinetBonusBalance" class="tabular-nums mt-3 text-2xl font-black text-white">32 500 so'm</div>
+              <div class="mt-1 text-[11px] text-rose-100/90">Savatda bonus ballarni ishlatish mumkin</div>
+            </div>
+
+            <div class="mt-4 grid grid-cols-3 gap-2.5 text-center">
+              <div class="rounded-2xl border border-gray-100 bg-[#f8f9fb] p-3">
+                <div id="cabinetOrdersTotal" class="tabular-nums text-base font-black text-[#e11d48]">2</div>
+                <div class="text-[11px] font-medium text-[#6b7280]">Buyurtmalar</div>
+              </div>
+              <div class="rounded-2xl border border-gray-100 bg-[#f8f9fb] p-3">
+                <div id="cabinetFavsTotal" class="tabular-nums text-base font-black text-[#111827]">0</div>
+                <div class="text-[11px] font-medium text-[#6b7280]">Sevimlilar</div>
+              </div>
+              <div class="rounded-2xl border border-gray-100 bg-[#f8f9fb] p-3">
+                <div id="cabinetCartTotal" class="tabular-nums text-base font-black text-[#10b981]">0</div>
+                <div class="text-[11px] font-medium text-[#6b7280]">Savatda</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-3xl border border-gray-200 bg-white p-5 shadow-xs">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-extrabold text-[#111827]">Manzillarim</h3>
+              <span class="text-[11px] font-semibold text-[#6b7280]">Yetkazish manzili</span>
+            </div>
+            <div id="savedAddressesList" class="mt-3 space-y-2"></div>
+            <form id="addAddressForm" class="mt-3 flex gap-2">
+              <input
+                id="newAddressInput"
+                type="text"
+                placeholder="Yangi manzil qo'shing..."
+                class="w-full rounded-xl border border-gray-200 bg-[#f8f9fb] px-3 py-2 text-xs font-medium text-[#111827] outline-none focus:border-[#e11d48] focus:bg-white"
+              />
+              <button type="submit" class="kg-btn shrink-0 rounded-xl bg-[#111827] px-3.5 py-2 text-xs font-extrabold text-white hover:bg-[#e11d48] cursor-pointer">
+                + Qo'shish
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7">
+          <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-xs">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h3 class="text-lg font-extrabold text-[#111827]">Buyurtmalar tarixi</h3>
+                <p class="text-xs text-[#6b7280]">Bir bosishda qayta buyurtma berish</p>
+              </div>
+            </div>
+            <div id="cabinetOrdersList" class="mt-4 space-y-3.5"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-gray-200 bg-[#f8f9fb] py-8 text-xs text-[#4b5563]">
+    <div class="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-3 px-4 sm:flex-row sm:px-6">
+      <div class="flex items-center gap-2">
+        <span class="font-black text-[#111827]">korzinka <span class="text-[#e11d48]">GO</span></span>
+        <span>•</span>
+        <span>Yirik Onlayn Platforma</span>
+      </div>
+      <div>Toshkent • <strong class="text-[#111827]">+998 78 140 14 14</strong></div>
+    </div>
+  </footer>
+
+  <!-- ==================== SAVAT (CART) DRAWER ==================== -->
+  <div id="cartDrawer" class="fixed inset-0 z-50 hidden">
+    <div id="cartBackdrop" class="drawer-backdrop fixed inset-0 bg-black/45 opacity-0"></div>
+    <aside id="cartPanel" class="drawer-panel fixed inset-y-0 right-0 flex w-full max-w-md translate-x-full flex-col bg-white shadow-2xl">
+      <div class="flex items-center justify-between border-b border-gray-100 px-5 py-4">
+        <div class="flex items-center gap-2">
+          <h2 class="text-lg font-extrabold text-[#111827]">Savat</h2>
+          <span id="drawerCartCountPill" class="tabular-nums rounded-full bg-[#fff1f2] px-2.5 py-0.5 text-xs font-black text-[#e11d48]">0 ta</span>
+        </div>
+        <button type="button" id="closeCartBtn" aria-label="Savatni yopish" class="flex h-8 w-8 items-center justify-center rounded-full bg-[#f8f9fb] text-xs font-bold text-[#4b5563] hover:bg-[#e11d48] hover:text-white cursor-pointer">
+          ✕
+        </button>
+      </div>
+
+      <!-- 150 000 so'm Free Delivery Progress Bar -->
+      <div class="border-b border-gray-100 bg-[#f8f9fb] px-5 py-3">
+        <div class="flex items-center justify-between text-xs font-bold">
+          <span id="freeDeliveryLabel" class="text-[#111827]">Bepul yetkazishgacha yana 150 000 so'm</span>
+          <span id="freeDeliveryPercentLabel" class="tabular-nums font-black text-[#10b981]">0%</span>
+        </div>
+        <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-gray-200">
+          <div id="freeDeliveryProgressBar" style="width: 0%" class="h-full rounded-full bg-[#10b981] transition-all duration-300"></div>
+        </div>
+      </div>
+
+      <div id="cartItemsContainer" class="flex-1 space-y-3 overflow-y-auto px-5 py-4"></div>
+
+      <div id="cartSummaryFooter" class="hidden space-y-3 border-t border-gray-200 bg-white px-5 py-4">
+        <div>
+          <div class="flex gap-2">
+            <input
+              id="promoCodeInput"
+              type="text"
+              placeholder="KORZINKA26 yoki MEGA50"
+              class="w-full rounded-xl border border-gray-200 bg-[#f8f9fb] px-3 py-2 text-xs font-extrabold uppercase text-[#111827] outline-none focus:border-[#e11d48] focus:bg-white"
+            />
+            <button
+              type="button"
+              id="applyPromoBtn"
+              class="kg-btn shrink-0 rounded-xl bg-[#111827] px-3.5 py-2 text-xs font-extrabold text-white hover:bg-[#e11d48] cursor-pointer"
+            >
+              Qo'llash
+            </button>
+          </div>
+          <p id="promoFeedbackMsg" class="mt-1 text-[11px] font-bold text-[#e11d48]"></p>
+        </div>
+
+        <label class="flex cursor-pointer items-center justify-between rounded-xl border border-amber-200 bg-amber-50/70 px-3 py-2 text-xs">
+          <span class="font-bold text-amber-950">
+            ★ Bonus ishlatish (<span id="availableBonusLabel" class="tabular-nums font-black">32 500 so'm</span>)
+          </span>
+          <input id="useBonusToggle" type="checkbox" class="h-4 w-4 accent-[#e11d48] cursor-pointer" />
+        </label>
+
+        <div class="space-y-1 text-xs tabular-nums">
+          <div class="flex justify-between text-[#4b5563]">
+            <span>Mahsulotlar summasi:</span>
+            <span id="cartSubtotalAmount" class="font-bold text-[#111827]">0 so'm</span>
+          </div>
+          <div id="cartPromoDiscountRow" class="hidden flex justify-between font-bold text-[#e11d48]">
+            <span>Promokod chegirmasi:</span>
+            <span id="cartPromoDiscountAmount">-0 so'm</span>
+          </div>
+          <div id="cartBonusUsedRow" class="hidden flex justify-between font-bold text-amber-700">
+            <span>Bonus hisobidan:</span>
+            <span id="cartBonusUsedAmount">-0 so'm</span>
+          </div>
+          <div class="flex justify-between text-[#4b5563]">
+            <span>Yetkazish:</span>
+            <span id="cartDeliveryAmount" class="font-bold text-[#111827]">15 000 so'm</span>
+          </div>
+          <div class="flex justify-between border-t border-gray-100 pt-2 text-base font-black text-[#111827]">
+            <span>Jami to'lov:</span>
+            <span id="cartGrandTotalAmount" class="text-[#e11d48]">0 so'm</span>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          id="openCheckoutModalBtn"
+          class="kg-btn w-full rounded-2xl bg-[#e11d48] py-3.5 text-sm font-black text-white shadow-sm shadow-rose-600/25 hover:bg-[#be123c] cursor-pointer"
+        >
+          Buyurtma berish
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ==================== SEVIMLILAR (FAVORITES) DRAWER ==================== -->
+  <div id="favoritesDrawer" class="fixed inset-0 z-50 hidden">
+    <div id="favoritesBackdrop" class="drawer-backdrop fixed inset-0 bg-black/45 opacity-0"></div>
+    <aside id="favoritesPanel" class="drawer-panel fixed inset-y-0 right-0 flex w-full max-w-md translate-x-full flex-col bg-white shadow-2xl">
+      <div class="flex items-center justify-between border-b border-gray-100 px-5 py-4">
+        <div class="flex items-center gap-2">
+          <span class="text-[#e11d48]">♥</span>
+          <h2 class="text-lg font-extrabold text-[#111827]">Sevimlilar</h2>
+        </div>
+        <button type="button" id="closeFavoritesBtn" aria-label="Sevimlilarni yopish" class="flex h-8 w-8 items-center justify-center rounded-full bg-[#f8f9fb] text-xs font-bold text-[#4b5563] hover:bg-[#e11d48] hover:text-white cursor-pointer">
+          ✕
+        </button>
+      </div>
+      <div id="favoritesItemsContainer" class="flex-1 space-y-3 overflow-y-auto px-5 py-4"></div>
+    </aside>
+  </div>
+
+  <!-- ==================== STORY VIEWER MODAL ==================== -->
+  <div id="storyViewerModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 p-4 backdrop-blur-xs">
+    <div class="modal-scale-in relative w-full max-w-md overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-2xl">
+      <div id="storyProgressRow" class="flex gap-1.5 bg-[#f8f9fb] p-3"></div>
+      <div class="p-5 sm:p-6">
+        <div class="flex items-center justify-between">
+          <span id="storyTagPill" class="rounded-full bg-[#fff1f2] px-3 py-1 text-[11px] font-black text-[#e11d48]">HIKOYA</span>
+          <button type="button" id="closeStoryViewerBtn" class="flex h-8 w-8 items-center justify-center rounded-full bg-[#f8f9fb] text-xs font-bold text-[#4b5563] hover:bg-[#e11d48] hover:text-white cursor-pointer">
+            ✕
+          </button>
+        </div>
+
+        <div id="storyVisualFrame" class="mt-4 h-48 w-full overflow-hidden rounded-2xl border border-gray-100 bg-[#f8f9fb]"></div>
+
+        <h3 id="storyHeading" class="mt-4 text-xl font-black text-[#111827]"></h3>
+        <p id="storyBodyText" class="mt-1.5 text-xs leading-relaxed text-[#4b5563] sm:text-sm"></p>
+
+        <div class="mt-5 flex items-center justify-between gap-2">
+          <div class="flex gap-2">
+            <button type="button" id="storyPrevBtn" class="kg-btn rounded-xl border border-gray-200 bg-white px-3.5 py-2 text-xs font-extrabold text-[#111827] hover:bg-[#f8f9fb] cursor-pointer">
+              ‹ Oldingi
+            </button>
+            <button type="button" id="storyNextBtn" class="kg-btn rounded-xl border border-gray-200 bg-white px-3.5 py-2 text-xs font-extrabold text-[#111827] hover:bg-[#f8f9fb] cursor-pointer">
+              Keyingi ›
+            </button>
+          </div>
+          <button type="button" id="storyJumpCategoryBtn" class="kg-btn rounded-xl bg-[#e11d48] px-4 py-2 text-xs font-extrabold text-white hover:bg-[#be123c] cursor-pointer">
+            Bo'limga o'tish
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PRODUCT QUICK-VIEW MODAL ==================== -->
+  <div id="quickViewModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+    <div id="quickViewBody" class="modal-scale-in relative max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl border border-gray-200 bg-white p-6 shadow-2xl"></div>
+  </div>
+
+  <!-- ==================== KORZINKA PLUS CARD MODAL ==================== -->
+  <div id="plusCardModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+    <div class="modal-scale-in relative w-full max-w-md rounded-3xl border border-gray-200 bg-white p-6 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-100 text-amber-700 font-black">★</span>
+          <div>
+            <h3 class="text-base font-extrabold text-[#111827]">Korzinka Plus Virtual Karta</h3>
+            <p class="text-[11px] text-[#6b7280]">Har xaridda 3% cashback / bonus</p>
+          </div>
+        </div>
+        <button type="button" id="closePlusModalBtn" class="flex h-8 w-8 items-center justify-center rounded-full bg-[#f8f9fb] text-xs font-bold text-[#4b5563] hover:bg-[#e11d48] hover:text-white cursor-pointer">
+          ✕
+        </button>
+      </div>
+
+      <div class="mt-4 rounded-2xl bg-gradient-to-br from-[#111827] via-[#1f2937] to-[#e11d48] p-5 text-white shadow-md">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-black tracking-wider text-amber-300">KORZINKA PLUS</span>
+          <span class="rounded-full bg-white/15 px-2.5 py-0.5 text-[10px] font-bold">GOLD DARAJA</span>
+        </div>
+        <div class="mt-4 font-mono text-base font-bold tracking-widest">8600 •••• •••• 7740</div>
+        <div class="mt-4 flex items-end justify-between">
+          <div>
+            <div class="text-[10px] text-rose-100">Bonus balans</div>
+            <div id="plusModalBonusVal" class="tabular-nums text-xl font-black">32 500 so'm</div>
+          </div>
+          <button
+            type="button"
+            id="copyPlusNumberBtn"
+            class="kg-btn rounded-xl bg-white/15 px-3 py-1.5 text-xs font-extrabold text-white hover:bg-white/25 cursor-pointer"
+          >
+            Raqamni nusxalash
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-4 flex items-center justify-between gap-4 rounded-2xl border border-gray-200 bg-[#f8f9fb] p-4">
+        <svg viewBox="0 0 64 64" class="h-16 w-16 shrink-0 rounded-xl bg-white p-1.5 border border-gray-200">
+          <rect x="4" y="4" width="18" height="18" rx="3" fill="none" stroke="#111827" stroke-width="4" />
+          <rect x="10" y="10" width="6" height="6" fill="#e11d48" />
+          <rect x="42" y="4" width="18" height="18" rx="3" fill="none" stroke="#111827" stroke-width="4" />
+          <rect x="48" y="10" width="6" height="6" fill="#e11d48" />
+          <rect x="4" y="42" width="18" height="18" rx="3" fill="none" stroke="#111827" stroke-width="4" />
+          <rect x="10" y="48" width="6" height="6" fill="#111827" />
+          <rect x="28" y="8" width="6" height="6" fill="#111827" />
+          <rect x="28" y="20" width="6" height="10" fill="#e11d48" />
+          <rect x="42" y="28" width="8" height="6" fill="#111827" />
+          <rect x="54" y="38" width="6" height="8" fill="#111827" />
+          <rect x="28" y="42" width="10" height="6" fill="#e11d48" />
+          <rect x="42" y="50" width="16" height="8" fill="#111827" />
+        </svg>
+        <div class="text-xs">
+          <div class="font-extrabold text-[#111827]">Kassada QR kodni ko'rsating</div>
+          <p class="mt-1 text-[11px] leading-relaxed text-[#4b5563]">
+            Har bir xariddan <strong class="text-[#111827]">3% bonus</strong> yig'iladi va keyingi buyurtmada 50% gacha qoplanadi.
+          </p>
+          <div class="mt-1 font-mono text-[10px] font-bold text-[#6b7280]">ID: KG-PLUS-2026-7740</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CHECKOUT & 4-STEP ORDER TRACKER MODAL ==================== -->
+  <div id="checkoutModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+    <div class="modal-scale-in relative max-h-[92vh] w-full max-w-md overflow-y-auto rounded-3xl border border-gray-200 bg-white p-6 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+        <div>
+          <h3 class="text-lg font-extrabold text-[#111827]">Buyurtmani rasmiylashtirish</h3>
+          <p class="text-xs text-[#6b7280]">Tezkor kuryer • 35–50 daqiqa</p>
+        </div>
+        <button type="button" id="closeCheckoutModalBtn" class="flex h-8 w-8 items-center justify-center rounded-full bg-[#f8f9fb] text-xs font-bold text-[#4b5563] hover:bg-[#e11d48] hover:text-white cursor-pointer">
+          ✕
+        </button>
+      </div>
+
+      <form id="checkoutForm" class="mt-4 space-y-3.5">
+        <div>
+          <label for="checkoutFullName" class="mb-1 block text-xs font-bold text-[#111827]">Ism-familiya</label>
+          <input id="checkoutFullName" type="text" required value="Azizbek Karimov" class="w-full rounded-xl border border-gray-200 bg-[#f8f9fb] px-3.5 py-2.5 text-sm font-medium text-[#111827] outline-none focus:border-[#e11d48] focus:bg-white" />
+        </div>
+        <div>
+          <label for="checkoutPhoneInput" class="mb-1 block text-xs font-bold text-[#111827]">Telefon raqam</label>
+          <input id="checkoutPhoneInput" type="tel" required value="+998 90 987 65 43" class="w-full rounded-xl border border-gray-200 bg-[#f8f9fb] px-3.5 py-2.5 text-sm font-medium text-[#111827] outline-none focus:border-[#e11d48] focus:bg-white" />
+        </div>
+        <div>
+          <label for="checkoutAddressSelect" class="mb-1 block text-xs font-bold text-[#111827]">Yetkazish manzili</label>
+          <input id="checkoutAddressSelect" type="text" required class="w-full rounded-xl border border-gray-200 bg-[#f8f9fb] px-3.5 py-2.5 text-sm font-medium text-[#111827] outline-none focus:border-[#e11d48] focus:bg-white" />
+        </div>
+        <div>
+          <label for="checkoutPaymentMethod" class="mb-1 block text-xs font-bold text-[#111827]">To'lov usuli</label>
+          <select id="checkoutPaymentMethod" class="w-full rounded-xl border border-gray-200 bg-[#f8f9fb] px-3.5 py-2.5 text-sm font-bold text-[#111827] outline-none focus:border-[#e11d48] focus:bg-white">
+            <option value="Uzcard / Humo">Uzcard / Humo</option>
+            <option value="Naqd pul">Naqd pul</option>
+            <option value="Click / Payme">Click / Payme</option>
+          </select>
+        </div>
+
+        <div class="flex items-center justify-between rounded-2xl bg-[#f8f9fb] border border-gray-200 px-4 py-3 text-xs font-bold">
+          <span class="text-[#4b5563]">To'lov summasi:</span>
+          <span id="checkoutPayableSum" class="tabular-nums text-base font-black text-[#e11d48]">0 so'm</span>
+        </div>
+
+        <button type="submit" class="kg-btn w-full rounded-2xl bg-[#e11d48] py-3.5 text-sm font-black text-white shadow-sm shadow-rose-600/25 hover:bg-[#be123c] cursor-pointer">
+          Buyurtmani tasdiqlash
+        </button>
+      </form>
+
+      <!-- 4-Step Live Order Status Tracker -->
+      <div id="checkoutTrackerView" class="hidden mt-4 space-y-4">
+        <div class="rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-emerald-800">✓ BUYURTMA TASDIQLANDI</span>
+            <span id="confirmedOrderCode" class="font-mono text-xs font-black text-[#111827]">#KG-2040</span>
+          </div>
+          <p class="mt-1 text-xs text-emerald-900">
+            <strong id="confirmedOrderDistrict">Yunusobod</strong> filialidan kuryer yo'lga chiqishga tayyorlanmoqda.
+          </p>
+        </div>
+
+        <div id="trackerStepsList" class="space-y-2.5 rounded-2xl border border-gray-200 bg-[#f8f9fb] p-4"></div>
+
+        <div class="flex gap-2">
+          <button type="button" id="goToCabinetOrdersBtn" class="kg-btn flex-1 rounded-xl bg-[#111827] py-2.5 text-xs font-extrabold text-white hover:bg-[#e11d48] cursor-pointer">
+            Kabinetimda ko'rish
+          </button>
+          <button type="button" id="doneCheckoutBtn" class="kg-btn flex-1 rounded-xl bg-[#e11d48] py-2.5 text-xs font-extrabold text-white hover:bg-[#be123c] cursor-pointer">
+            Davom etish
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== VACANCY APPLICATION MODAL ==================== -->
+  <div id="vacancyModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+    <div class="modal-scale-in relative w-full max-w-md rounded-3xl border border-gray-200 bg-white p-6 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+        <div>
+          <span class="rounded-md bg-[#fff1f2] px-2 py-0.5 text-[10px] font-black text-[#e11d48]">VAKANSIYA ARIZASI</span>
+          <h3 id="vacancyModalRoleTitle" class="mt-1 text-lg font-extrabold text-[#111827]">Lavozim</h3>
+        </div>
+        <button type="button" id="closeVacancyModalBtn" class="flex h-8 w-8 items-center justify-center rounded-full bg-[#f8f9fb] text-xs font-bold text-[#4b5563] hover:bg-[#e11d48] hover:text-white cursor-pointer">
+          ✕
+        </button>
+      </div>
+
+      <div id="vacancyFormPanel">
+        <form id="vacancyApplyForm" class="mt-4 space-y-3.5">
+          <div>
+            <label for="vacancyNameInput" class="mb-1 block text-xs font-bold text-[#111827]">Ism-familiya</label>
+            <input id="vacancyNameInput" type="text" required placeholder="Ism va familiyangiz" class="w-full rounded-xl border border-gray-200 bg-[#f8f9fb] px-3.5 py-2.5 text-sm font-medium text-[#111827] outline-none focus:border-[#e11d48] focus:bg-white" />
+          </div>
+          <div>
+            <label for="vacancyPhoneInput" class="mb-1 block text-xs font-bold text-[#111827]">Telefon raqam</label>
+            <input id="vacancyPhoneInput" type="tel" required placeholder="+998 90 123 45 67" class="w-full rounded-xl border border-gray-200 bg-[#f8f9fb] px-3.5 py-2.5 text-sm font-medium text-[#111827] outline-none focus:border-[#e11d48] focus:bg-white" />
+          </div>
+          <div>
+            <label for="vacancyBranchSelect" class="mb-1 block text-xs font-bold text-[#111827]">Tuman / Filial</label>
+            <select id="vacancyBranchSelect" class="w-full rounded-xl border border-gray-200 bg-[#f8f9fb] px-3.5 py-2.5 text-sm font-bold text-[#111827] outline-none focus:border-[#e11d48] focus:bg-white">
+              <option value="Yunusobod">Yunusobod</option>
+              <option value="Chilonzor">Chilonzor</option>
+              <option value="Mirzo Ulug'bek">Mirzo Ulug'bek</option>
+              <option value="Yakkasaroy">Yakkasaroy</option>
+              <option value="Shayxontohur">Shayxontohur</option>
+              <option value="Sergeli">Sergeli</option>
+            </select>
+          </div>
+          <button type="submit" class="kg-btn w-full rounded-2xl bg-[#e11d48] py-3 text-xs font-black text-white shadow-xs hover:bg-[#be123c] cursor-pointer">
+            Ariza yuborish
+          </button>
+        </form>
+      </div>
+
+      <div id="vacancyConfirmedPanel" class="hidden mt-4 space-y-4 text-center">
+        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-xl font-black text-emerald-700">✓</div>
+        <div>
+          <h4 class="text-base font-extrabold text-[#111827]">Arizangiz qabul qilindi!</h4>
+          <p id="vacancyConfirmSummary" class="mt-1 text-xs text-[#4b5563]"></p>
+        </div>
+        <button type="button" id="closeVacancyDoneBtn" class="kg-btn w-full rounded-xl bg-[#e11d48] py-2.5 text-xs font-extrabold text-white hover:bg-[#be123c] cursor-pointer">
+          Yopish
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div
+    id="toastNotification"
+    role="status"
+    class="pointer-events-none fixed bottom-5 left-1/2 z-50 -translate-x-1/2 translate-y-3 rounded-2xl bg-[#111827] px-5 py-3 text-xs font-extrabold text-white opacity-0 shadow-xl transition-all duration-300"
+  >
+    Xabar
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // =====================================================================
+      // 1. REAL UNSPLASH PHOTOGRAPHY + AUTOMATIC INLINE SVG FALLBACK HANDLER
+      // =====================================================================
+      var CATEGORY_THEME = {
+        'Meva va sabzavot': { bgA: '#fff1f2', bgB: '#ffe4e6', accent: '#e11d48', tag: 'MEVA & SABZAVOT' },
+        'Sut va pishloq': { bgA: '#f8f9fb', bgB: '#fef2f2', accent: '#be123c', tag: 'SUT & PISHLOQ' },
+        "Go'sht va parranda": { bgA: '#fff1f2', bgB: '#fecdd3', accent: '#9f1239', tag: "GO'SHT & PARRANDA" },
+        'Nonvoyxona': { bgA: '#fffbeb', bgB: '#fff1f2', accent: '#e11d48', tag: 'NONVOYXONA' },
+        'Ichimliklar': { bgA: '#f8f9fb', bgB: '#ffe4e6', accent: '#be123c', tag: 'ICHIMLIKLAR' },
+        'Oziq-ovqat bazasi': { bgA: '#f8f9fb', bgB: '#f3f4f6', accent: '#111827', tag: 'OZIQ-OVQAT BAZASI' },
+        'Shirinlik, choy va kofe': { bgA: '#fff1f2', bgB: '#fef2f2', accent: '#e11d48', tag: 'CHOY & SHIRINLIK' },
+        "Uy-ro'zg'or": { bgA: '#f8f9fb', bgB: '#ffe4e6', accent: '#111827', tag: "UY-RO'ZG'OR" },
+        'Bolalar': { bgA: '#fff1f2', bgB: '#fffbeb', accent: '#e11d48', tag: 'BOLALAR' },
+        'Muzlatilgan': { bgA: '#f8f9fb', bgB: '#f1f3f7', accent: '#be123c', tag: 'MUZLUTILGAN' },
+        "Sog'lom ovqat & Gigiyena": { bgA: '#fff1f2', bgB: '#f8f9fb', accent: '#e11d48', tag: 'GIGIYENA & FOYDA' }
+      };
+
+      function svgDataUri(svgMarkup) {
+        return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgMarkup);
+      }
+
+      function escapeXml(str) {
+        return String(str || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function makeProductSvgUri(category, title, emoji) {
+        var theme = CATEGORY_THEME[category] || { bgA: '#f8f9fb', bgB: '#fff1f2', accent: '#e11d48', tag: 'KORZINKA GO' };
+        var safeTitle = escapeXml(String(title || '').slice(0, 22));
+        var safeEmoji = escapeXml(String(emoji || '🛒'));
+        var svg =
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220">' +
+          '<defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="1">' +
+          '<stop offset="0%" stop-color="' + theme.bgA + '"/>' +
+          '<stop offset="100%" stop-color="' + theme.bgB + '"/>' +
+          '</linearGradient></defs>' +
+          '<rect width="320" height="220" rx="22" fill="url(#pg)"/>' +
+          '<circle cx="160" cy="86" r="56" fill="' + theme.accent + '" fill-opacity="0.09"/>' +
+          '<circle cx="160" cy="86" r="41" fill="#ffffff" stroke="' + theme.accent + '" stroke-opacity="0.28" stroke-width="2"/>' +
+          '<text x="160" y="99" text-anchor="middle" font-size="34">' + safeEmoji + '</text>' +
+          '<rect x="22" y="148" width="276" height="50" rx="14" fill="#ffffff" stroke="#e5e7eb"/>' +
+          '<text x="160" y="166" text-anchor="middle" fill="' + theme.accent + '" font-family="sans-serif" font-size="9" font-weight="800" letter-spacing="0.8">' + escapeXml(theme.tag) + '</text>' +
+          '<text x="160" y="184" text-anchor="middle" fill="#111827" font-family="sans-serif" font-size="11.5" font-weight="700">' + safeTitle + '</text>' +
+          '</svg>';
+        return svgDataUri(svg);
+      }
+
+      function makeBannerSvgUri(badge, title, subtitle, idx) {
+        var palettes = [
+          ['#be123c', '#e11d48', '#9f1239'],
+          ['#111827', '#1f2937', '#be123c'],
+          ['#9f1239', '#e11d48', '#111827'],
+          ['#1f2937', '#be123c', '#e11d48']
+        ];
+        var p = palettes[idx % palettes.length];
+        var svg =
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 420">' +
+          '<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">' +
+          '<stop offset="0%" stop-color="' + p[0] + '"/>' +
+          '<stop offset="55%" stop-color="' + p[1] + '"/>' +
+          '<stop offset="100%" stop-color="' + p[2] + '"/>' +
+          '</linearGradient></defs>' +
+          '<rect width="920" height="420" fill="url(#bg)"/>' +
+          '<circle cx="780" cy="90" r="170" fill="#ffffff" fill-opacity="0.08"/>' +
+          '<circle cx="675" cy="345" r="200" fill="#ffffff" fill-opacity="0.06"/>' +
+          '<rect x="52" y="60" width="235" height="32" rx="16" fill="#ffffff"/>' +
+          '<text x="169" y="81" text-anchor="middle" fill="#be123c" font-family="sans-serif" font-size="12" font-weight="900">' + escapeXml(badge) + '</text>' +
+          '<text x="52" y="148" fill="#ffffff" font-family="sans-serif" font-size="35" font-weight="800">' + escapeXml(title) + '</text>' +
+          '<text x="52" y="192" fill="#ffe4e6" font-family="sans-serif" font-size="17" font-weight="500">' + escapeXml(subtitle) + '</text>' +
+          '</svg>';
+        return svgDataUri(svg);
+      }
+
+      function uImg(photoId, w) {
+        return 'https://images.unsplash.com/photo-' + photoId + '?auto=format&fit=crop&w=' + (w || 520) + '&q=80';
+      }
+
+      function imgFallbackAttr(fallbackUri) {
+        return 'onerror="this.onerror=null;this.src=\'' + fallbackUri + '\'"';
+      }
+
+      // =====================================================================
+      // 2. CATALOG DATA: 8 STORIES, 4 SLIDES, 12 CATEGORIES, 64 PRODUCTS
+      // =====================================================================
+      var STORIES = [
+        { id: 'st-1', title: 'Yangi Hosil', tag: 'YANGI HOSIL', emoji: '🍓', photo: uImg('1542838132-92c53300491e', 420), desc: "Dala va issiqxonalardan yangi terilgan meva-sabzavotlar har kuni ertalab rastalarga tushadi.", category: 'Meva va sabzavot', discountOnly: false },
+        { id: 'st-2', title: 'Turbo Chegirma', tag: 'TURBO -28%', emoji: '⚡', photo: uImg('1607623814075-e51df1bdc82f', 420), desc: "Kunlik Turbo Chegirma bilan eng ommabop mahsulotlarni foydali narxda savatga qo'shing.", category: 'Barchasi', discountOnly: true },
+        { id: 'st-3', title: "Halol Go'sht", tag: 'SIFAT KAFOLATI', emoji: '🥩', photo: uImg('1588168333986-5078d3ae3976', 420), desc: "Sertifikatlangan halol mol va qo'y go'shti hamda yangi parranda mahsulotlari.", category: "Go'sht va parranda", discountOnly: false },
+        { id: 'st-4', title: 'Nonushta', tag: 'TONGI FOYDA', emoji: '🥐', photo: uImg('1533089860892-a7c6f0a88666', 420), desc: "Sut, pishloq, sariyog', patir va kruassanlar bilan mazali nonushta tayyorlang.", category: 'Sut va pishloq', discountOnly: false },
+        { id: 'st-5', title: 'Korzinka Plus', tag: 'BONUS KARTA', emoji: '★', photo: uImg('1556742049-0cfed4f6a45d', 420), desc: "Har bir xariddan 3% bonus yig'ing va keyingi buyurtmalaringizda foydalaning.", category: 'Barchasi', discountOnly: false },
+        { id: 'st-6', title: 'Osh Bazasi', tag: 'MILLIY TAOM', emoji: '🍚', photo: uImg('1586201375761-83865001e31c', 420), desc: "Guruch, sabzi, go'sht, yog' va ziravorlar — haqiqiy o'zbek oshi uchun barchasi bir joyda.", category: 'Oziq-ovqat bazasi', discountOnly: false },
+        { id: 'st-7', title: 'Uy Tozaligi', tag: 'TOZA MUHIT', emoji: '✨', photo: uImg('1584622650111-993a426fbf0a', 420), desc: "Kir yuvish vositalari, yuzalar uchun spreylar va xo'jalik buyumlariga qulay narxlar.", category: "Uy-ro'zg'or", discountOnly: false },
+        { id: 'st-8', title: 'Tezkor 35–50m', tag: 'TEZKOR KURYER', emoji: '🛵', photo: uImg('1526367790999-0150786686a2', 420), desc: "Toshkent tumanlari bo'ylab 35–50 daqiqada yetkazish; 150 000 so'mdan BEPUL.", category: 'Barchasi', discountOnly: false }
+      ];
+
+      var HERO_SLIDES = [
+        {
+          badge: 'KORZINKA GO • PLATFORMASI',
+          title: "Kundalik xaridlarni tez va qulay bajaring",
+          subtitle: "64 ta saralangan mahsulot, 12 kategoriya, haftalik aksiyalar, filiallar xaritasi va shaxsiy kabinet.",
+          cta: "Aksiyalarni ko'rish",
+          tab: 'aksiyalar',
+          category: 'Barchasi',
+          photo: uImg('1542838132-92c53300491e', 1200),
+          fallback: makeBannerSvgUri('KORZINKA GO', "Kundalik xaridlarni tez bajaring", "64 mahsulot • 150 000 so'mdan BEPUL yetkazish", 0)
+        },
+        {
+          badge: 'PROMOKOD • KORZINKA26',
+          title: "Savatda 15% chegirma oling",
+          subtitle: "KORZINKA26 promokodi 15% chegirma beradi, MEGA50 esa 25 000 so'm kamaytiradi.",
+          cta: "Chegirmali mahsulotlar",
+          tab: 'supermarket',
+          category: 'Barchasi',
+          photo: uImg('1610832958506-aa56368176cf', 1200),
+          fallback: makeBannerSvgUri('PROMOKOD -15%', "KORZINKA26 bilan qo'shimcha chegirma", "Savatda bir bosishda qo'llang", 1)
+        },
+        {
+          badge: 'FILIALLAR XARITASI',
+          title: "Toshkent bo'ylab yaqin do'konni toping",
+          subtitle: "Yunusobod, Chilonzor, Mirzo Ulug'bek, Yakkasaroy, Shayxontohur va Sergeli filiallari.",
+          cta: "Xaritani ochish",
+          tab: 'dokonlar',
+          category: 'Barchasi',
+          photo: uImg('1578916171728-46686eac8d58', 1200),
+          fallback: makeBannerSvgUri("DO'KONLAR XARITASI", "Toshkentdagi barcha filiallar", "Interaktiv xarita va manzillar", 2)
+        },
+        {
+          badge: 'KORZINKA PLUS',
+          title: "Har xariddan bonus yig'ing va ishlating",
+          subtitle: "Virtual kartangiz raqamini nusxalang va savatda bonus ballar bilan to'lang.",
+          cta: "Kabinetimga o'tish",
+          tab: 'kabinetim',
+          category: 'Barchasi',
+          photo: uImg('1509440159596-0249088772ff', 1200),
+          fallback: makeBannerSvgUri('KORZINKA PLUS', "Bonus balansingizni boshqaring", "Buyurtmalar tarixi va qayta buyurtma", 3)
+        }
+      ];
+
+      var CATEGORIES = [
+        { id: 'Barchasi', label: 'Barchasi', icon: '🛒' },
+        { id: 'Meva va sabzavot', label: 'Meva va sabzavot', icon: '🍎' },
+        { id: 'Sut va pishloq', label: 'Sut va pishloq', icon: '🥛' },
+        { id: "Go'sht va parranda", label: "Go'sht va parranda", icon: '🥩' },
+        { id: 'Nonvoyxona', label: 'Nonvoyxona', icon: '🥖' },
+        { id: 'Ichimliklar', label: 'Ichimliklar', icon: '🥤' },
+        { id: 'Oziq-ovqat bazasi', label: 'Oziq-ovqat bazasi', icon: '🌾' },
+        { id: 'Shirinlik, choy va kofe', label: 'Shirinlik, choy va kofe', icon: '🍵' },
+        { id: "Uy-ro'zg'or", label: "Uy-ro'zg'or", icon: '🏠' },
+        { id: 'Bolalar', label: 'Bolalar', icon: '🍼' },
+        { id: 'Muzlatilgan', label: 'Muzlatilgan', icon: '🧊' },
+        { id: "Sog'lom ovqat & Gigiyena", label: "Sog'lom ovqat & Gigiyena", icon: '🌿' }
+      ];
+
+      var PRODUCTS = [
+        // Meva va sabzavot (6)
+        { id: 1, name: "Qizil olma Gala", category: 'Meva va sabzavot', unit: '1 kg', price: 16500, oldPrice: 20500, discount: 20, rating: 4.9, inStock: true, emoji: '🍎', photo: uImg('1560806887-1e4cd0b6cbd6'), desc: "Sersuv va shirin qizil olma. Kundalik iste'mol va salatlar uchun." },
+        { id: 2, name: "Banan Ekvador", category: 'Meva va sabzavot', unit: '1 kg', price: 23900, oldPrice: 27500, discount: 13, rating: 4.8, inStock: true, emoji: '🍌', photo: uImg('1571771894821-ce9b6c11b08e'), desc: "Pishgan va yumshoq banan. Nonushta hamda desertlar uchun." },
+        { id: 3, name: "Pushti pomidor", category: 'Meva va sabzavot', unit: '1 kg', price: 18500, oldPrice: 0, discount: 0, rating: 4.9, inStock: true, emoji: '🍅', photo: uImg('1592924357228-91a4daadcfea'), desc: "Yangi pushti pomidor. Tabiiy ta'mli va sersuv." },
+        { id: 4, name: "Issiqxona bodringi", category: 'Meva va sabzavot', unit: '1 kg', price: 14500, oldPrice: 18000, discount: 19, rating: 4.7, inStock: true, emoji: '🥒', photo: uImg('1449300079323-02e209d9d3a6'), desc: "Qarsildoq yangi bodring. Kundalik salatlar uchun." },
+        { id: 5, name: "Qizil sabzi", category: 'Meva va sabzavot', unit: '1 kg', price: 6500, oldPrice: 0, discount: 0, rating: 4.8, inStock: true, emoji: '🥕', photo: uImg('1598170845058-32b9d6a5da37'), desc: "Osh va sho'rvalar uchun toza, shirin sabzi." },
+        { id: 6, name: "Qulupnay yangi", category: 'Meva va sabzavot', unit: '500 g', price: 29500, oldPrice: 35000, discount: 16, rating: 4.9, inStock: true, emoji: '🍓', photo: uImg('1464965911861-746a04b4bca6'), desc: "Xushbo'y yangi qulupnay. Shirinlik va to'g'ridan-to'g'ri iste'molga." },
+
+        // Sut va pishloq (6)
+        { id: 7, name: "Musaffo Sut 3.2%", category: 'Sut va pishloq', unit: '1 L', price: 13900, oldPrice: 16000, discount: 13, rating: 4.9, inStock: true, emoji: '🥛', photo: uImg('1563636619-e9143da7973b'), desc: "Pasterizatsiyalangan 3.2% sut. Choy, qahva va bo'tqa uchun." },
+        { id: 8, name: "Qaymoq 20%", category: 'Sut va pishloq', unit: '400 g', price: 21500, oldPrice: 24500, discount: 12, rating: 4.8, inStock: true, emoji: '🥣', photo: uImg('1488477181946-6428a0291777'), desc: "Quyultirilgan mayin qaymoq. Somsa, manti va shirinliklarga." },
+        { id: 9, name: "Sariyog' 82.5%", category: 'Sut va pishloq', unit: '200 g', price: 26500, oldPrice: 31000, discount: 15, rating: 4.9, inStock: true, emoji: '🧈', photo: uImg('1589985270826-4b7bb135bc9d'), desc: "Yuqori yog'lilikdagi qaymoqli sariyog'. Nonushta va pishiriqlar uchun." },
+        { id: 10, name: "Qattiq pishloq Golland", category: 'Sut va pishloq', unit: '250 g', price: 29000, oldPrice: 0, discount: 0, rating: 4.7, inStock: true, emoji: '🧀', photo: uImg('1486297678162-eb2a19b0a32d'), desc: "Sendvich, pitsa va gazaklar uchun mazali pishloq." },
+        { id: 11, name: "Tuxum C0 (10 dona)", category: 'Sut va pishloq', unit: '10 dona', price: 19500, oldPrice: 22500, discount: 13, rating: 4.8, inStock: true, emoji: '🥚', photo: uImg('1582722872445-44dc5f7e3c8f'), desc: "Saralangan yirik tovuq tuxumlari. Qadoqlangan." },
+        { id: 12, name: "Tabiiy kefir 2.5%", category: 'Sut va pishloq', unit: '900 g', price: 14200, oldPrice: 0, discount: 0, rating: 4.7, inStock: true, emoji: '🫙', photo: uImg('1550583724-b2692b85b150'), desc: "Yengil va foydali kefir. Kechki ovqat yoki nonushtaga." },
+
+        // Go'sht va parranda (6)
+        { id: 13, name: "Mol go'shti lahm", category: "Go'sht va parranda", unit: '1 kg', price: 84900, oldPrice: 118000, discount: 28, rating: 4.9, inStock: true, emoji: '🥩', photo: uImg('1607623814075-e51df1bdc82f'), desc: "Suyaksiz yumshoq mol lahmi. Qovurdoq, kabob va dimlama uchun." },
+        { id: 14, name: "Qo'y go'shti qovurg'a", category: "Go'sht va parranda", unit: '1 kg', price: 89500, oldPrice: 99000, discount: 10, rating: 4.9, inStock: true, emoji: '🍖', photo: uImg('1588168333986-5078d3ae3976'), desc: "Osh va sho'rvalarga boy ta'm beruvchi qo'y qovurg'asi." },
+        { id: 15, name: "Tovuq filesi", category: "Go'sht va parranda", unit: '1 kg', price: 44000, oldPrice: 51000, discount: 14, rating: 4.8, inStock: true, emoji: '🍗', photo: uImg('1604503468506-a8da13d82791'), desc: "Parhez va tez pishadigan tovuq ko'krak filesi." },
+        { id: 16, name: "Tovuq boldiri", category: "Go'sht va parranda", unit: '1 kg', price: 36500, oldPrice: 0, discount: 0, rating: 4.7, inStock: true, emoji: '🍗', photo: uImg('1587593810167-a84920ea0781'), desc: "Duxovkada pishirish va qovurish uchun sersuv tovuq boldiri." },
+        { id: 17, name: "Mol qiymasi yangi", category: "Go'sht va parranda", unit: '800 g', price: 67500, oldPrice: 75000, discount: 10, rating: 4.8, inStock: true, emoji: '🥘', photo: uImg('1551028150-64b9f398f678'), desc: "Kotlet, lag'mon va chuchvara uchun yangi mol qiymasi." },
+        { id: 18, name: "Tovuq qanotchalari", category: "Go'sht va parranda", unit: '1 kg', price: 34000, oldPrice: 39000, discount: 13, rating: 4.7, inStock: true, emoji: '🍖', photo: uImg('1527477396000-e27163b481c2'), desc: "Marinadlash va grilda pishirish uchun mazali qanotchalar." },
+
+        // Nonvoyxona (6)
+        { id: 19, name: "Tandir patir non", category: 'Nonvoyxona', unit: '1 dona', price: 8500, oldPrice: 0, discount: 0, rating: 4.9, inStock: true, emoji: '🫓', photo: uImg('1509440159596-0249088772ff'), desc: "Kunjutli, qarsildoq qobiqli an'anaviy patir non." },
+        { id: 20, name: "Fransuz bageti", category: 'Nonvoyxona', unit: '300 g', price: 7500, oldPrice: 9000, discount: 17, rating: 4.8, inStock: true, emoji: '🥖', photo: uImg('1549931319-a545dcf3bc73'), desc: "Bug'doy unidan pishirilgan yumshoq baget." },
+        { id: 21, name: "Sariyog'li kruassan", category: 'Nonvoyxona', unit: '2 dona', price: 17500, oldPrice: 20500, discount: 15, rating: 4.8, inStock: true, emoji: '🥐', photo: uImg('1555507036-ab1f4038808a'), desc: "Qat-qat va mayin kruassan. Qahva yoki choy bilan." },
+        { id: 22, name: "Go'shtli somsa", category: 'Nonvoyxona', unit: '4 dona', price: 28000, oldPrice: 32000, discount: 13, rating: 4.9, inStock: true, emoji: '🥟', photo: uImg('1601050690597-df0568f70950'), desc: "Piyoz va go'shtli qatlama somsa." },
+        { id: 23, name: "Toster noni oq", category: 'Nonvoyxona', unit: '450 g', price: 11000, oldPrice: 0, discount: 0, rating: 4.6, inStock: true, emoji: '🍞', photo: uImg('1598373182133-52452f7691ef'), desc: "Tilimlangan yumshoq toster non. Sendvichlar uchun." },
+        { id: 24, name: "Asalli tort bo'lagi", category: 'Nonvoyxona', unit: '250 g', price: 24000, oldPrice: 28000, discount: 14, rating: 4.8, inStock: true, emoji: '🍰', photo: uImg('1578985545062-69928b1d9587'), desc: "Asalli qatlamli va qaymoqli krem bilan tayyorlangan shirinlik." },
+
+        // Ichimliklar (6)
+        { id: 25, name: "Gazsiz ichimlik suvi", category: 'Ichimliklar', unit: '1.5 L', price: 5500, oldPrice: 0, discount: 0, rating: 4.9, inStock: true, emoji: '💧', photo: uImg('1548839140-29a749e1cf4d'), desc: "Toza ichimlik suvi. Kundalik iste'mol uchun." },
+        { id: 26, name: "Tabiiy olma sharbati", category: 'Ichimliklar', unit: '1 L', price: 16500, oldPrice: 19500, discount: 15, rating: 4.8, inStock: true, emoji: '🧃', photo: uImg('1576673442511-7e39b6545c87'), desc: "Shakar qo'shilmagan tabiiy olma sharbati." },
+        { id: 27, name: "Olcha nektari", category: 'Ichimliklar', unit: '1 L', price: 15800, oldPrice: 0, discount: 0, rating: 4.7, inStock: true, emoji: '🍒', photo: uImg('1513558161293-cdaf765ed2fd'), desc: "Nordon-shirin ta'mli olcha nektari." },
+        { id: 28, name: "Gazlangan ichimlik Classic", category: 'Ichimliklar', unit: '1.5 L', price: 13500, oldPrice: 16000, discount: 16, rating: 4.8, inStock: true, emoji: '🥤', photo: uImg('1622483767028-3f66f32aef97'), desc: "Tetiklashtiruvchi gazlangan ichimlik." },
+        { id: 29, name: "Limonli sovuq choy", category: 'Ichimliklar', unit: '1 L', price: 12000, oldPrice: 0, discount: 0, rating: 4.7, inStock: true, emoji: '🍋', photo: uImg('1556679343-c7306c1976bc'), desc: "Limon ta'mli yengil sovuq choy." },
+        { id: 30, name: "Apelsin sharbati 100%", category: 'Ichimliklar', unit: '1 L', price: 18500, oldPrice: 22000, discount: 16, rating: 4.8, inStock: true, emoji: '🍊', photo: uImg('1621506289937-a8e4df240d0b'), desc: "Xushbo'y va vitaminli tabiiy apelsin sharbati." },
+
+        // Oziq-ovqat bazasi (6)
+        { id: 31, name: "Devzira guruch", category: 'Oziq-ovqat bazasi', unit: '1 kg', price: 34000, oldPrice: 39000, discount: 13, rating: 4.9, inStock: true, emoji: '🍚', photo: uImg('1586201375761-83865001e31c'), desc: "Haqiqiy o'zbek oshi uchun saralangan guruch." },
+        { id: 32, name: "Kungaboqar yog'i tozalangan", category: 'Oziq-ovqat bazasi', unit: '1 L', price: 22500, oldPrice: 26000, discount: 13, rating: 4.8, inStock: true, emoji: '🫗', photo: uImg('1474979266404-7eaacbcd87c5'), desc: "Qovurish va salatlar uchun tozalangan o'simlik yog'i." },
+        { id: 33, name: "Oliy navli un", category: 'Oziq-ovqat bazasi', unit: '2 kg', price: 17500, oldPrice: 0, discount: 0, rating: 4.7, inStock: true, emoji: '🌾', photo: uImg('1574323347407-f5e1ad6d020b'), desc: "Non, lag'mon va xamirli taomlar uchun oliy navli un." },
+        { id: 34, name: "Makaron spirali", category: 'Oziq-ovqat bazasi', unit: '500 g', price: 11500, oldPrice: 13500, discount: 15, rating: 4.7, inStock: true, emoji: '🍝', photo: uImg('1551462147-ff29053bfc14'), desc: "Qattiq bug'doy navidan tayyorlangan mazali makaron." },
+        { id: 35, name: "Oq shakar qum", category: 'Oziq-ovqat bazasi', unit: '1 kg', price: 14500, oldPrice: 0, discount: 0, rating: 4.8, inStock: true, emoji: '🧂', photo: uImg('1581441363689-1f3c3c414635'), desc: "Choy, qahva va pishiriqlar uchun toza shakar." },
+        { id: 36, name: "Qizil loviya", category: 'Oziq-ovqat bazasi', unit: '800 g', price: 19000, oldPrice: 22000, discount: 14, rating: 4.7, inStock: true, emoji: '🫘', photo: uImg('1515543904379-3d757afe72e4'), desc: "Sho'rva va salatlar uchun oqsilga boy qizil loviya." },
+
+        // Shirinlik, choy va kofe (6)
+        { id: 37, name: "Qora bargli choy", category: 'Shirinlik, choy va kofe', unit: '200 g', price: 24500, oldPrice: 29000, discount: 16, rating: 4.9, inStock: true, emoji: '🍵', photo: uImg('1564890369478-c89ca6d9cde9'), desc: "Boy rang va xushbo'y hidga ega saralangan qora choy." },
+        { id: 38, name: "Yashil choy jasmin", category: 'Shirinlik, choy va kofe', unit: '150 g', price: 22000, oldPrice: 0, discount: 0, rating: 4.8, inStock: true, emoji: '🫖', photo: uImg('1597318181409-cf64d0b5d8a2'), desc: "Nozik gul iforiga ega tabiiy yashil choy." },
+        { id: 39, name: "Tabiiy donali qahva", category: 'Shirinlik, choy va kofe', unit: '250 g', price: 49000, oldPrice: 57000, discount: 14, rating: 4.9, inStock: true, emoji: '☕', photo: uImg('1559056199-641a0ac8b55e'), desc: "Qovurilgan qahva donalari. Espresso va turkcha qahva uchun." },
+        { id: 40, name: "Sutli shokolad plitka", category: 'Shirinlik, choy va kofe', unit: '100 g', price: 14500, oldPrice: 17000, discount: 15, rating: 4.8, inStock: true, emoji: '🍫', photo: uImg('1549007994-cb92caebd54b'), desc: "Mayin eruvchi sutli shokolad." },
+        { id: 41, name: "Yong'oqli pechenye", category: 'Shirinlik, choy va kofe', unit: '350 g', price: 19500, oldPrice: 0, discount: 0, rating: 4.7, inStock: true, emoji: '🍪', photo: uImg('1499636136210-6f4ee915583e'), desc: "Choyxo'rlik uchun mazali yong'oqli pechenye." },
+        { id: 42, name: "Qovurilgan bodom", category: 'Shirinlik, choy va kofe', unit: '200 g', price: 36000, oldPrice: 42000, discount: 14, rating: 4.8, inStock: true, emoji: '🥜', photo: uImg('1508061253366-f7da158b6d46'), desc: "Foydali va mazali qovurilgan bodom mag'zi." },
+
+        // Uy-ro'zg'or (6)
+        { id: 43, name: "Kir yuvish geli", category: "Uy-ro'zg'or", unit: '2 L', price: 54000, oldPrice: 65000, discount: 17, rating: 4.8, inStock: true, emoji: '🧴', photo: uImg('1583947215259-38e31be8751f'), desc: "Matolardagi dog'larni samarali ketkazuvchi konsentrat gel." },
+        { id: 44, name: "Idish yuvish vositasi", category: "Uy-ro'zg'or", unit: '900 ml', price: 18500, oldPrice: 22000, discount: 16, rating: 4.8, inStock: true, emoji: '🫧', photo: uImg('1585421514738-01798e348b17'), desc: "Yog'ni tez ketkazuvchi va qo'llarni asrovchi gel." },
+        { id: 45, name: "Yuzalar uchun sprey", category: "Uy-ro'zg'or", unit: '500 ml', price: 23500, oldPrice: 28000, discount: 16, rating: 4.7, inStock: true, emoji: '✨', photo: uImg('1563453392212-326f5e854473'), desc: "Oshxona va uy yuzalarini tozalovchi sprey." },
+        { id: 46, name: "Oynalar tozalagich", category: "Uy-ro'zg'or", unit: '500 ml', price: 19000, oldPrice: 0, discount: 0, rating: 4.6, inStock: true, emoji: '🪟', photo: uImg('1528740561666-dc2479dc08ab'), desc: "Iz qoldirmasdan oynalarni yaltiratuvchi vosita." },
+        { id: 47, name: "Kukunli kir yuvish vositasi", category: "Uy-ro'zg'or", unit: '3 kg', price: 68000, oldPrice: 78000, discount: 13, rating: 4.8, inStock: true, emoji: '🧺', photo: uImg('1610557892470-55d9e80c0bce'), desc: "Avtomat kir yuvish mashinalari uchun kukun." },
+        { id: 48, name: "Qog'oz sochiq (2 rulon)", category: "Uy-ro'zg'or", unit: '2 rulon', price: 18000, oldPrice: 21000, discount: 14, rating: 4.8, inStock: true, emoji: '🧻', photo: uImg('1584556812952-905ffd0c611a'), desc: "Oshxona uchun mustahkam va yaxshi shimuvchi qog'oz." },
+
+        // Bolalar (5)
+        { id: 49, name: "Bolalar suti adaptatsiya", category: 'Bolalar', unit: '400 g', price: 64000, oldPrice: 72000, discount: 11, rating: 4.9, inStock: true, emoji: '🍼', photo: uImg('1515488042361-ee00e0ddd4e4'), desc: "Kichkintoylar uchun maxsus boyitilgan quruq sut." },
+        { id: 50, name: "Mevali bolalar pyuresi", category: 'Bolalar', unit: '120 g', price: 9500, oldPrice: 0, discount: 0, rating: 4.8, inStock: true, emoji: '🍏', photo: uImg('1590080875515-8a3a8dc5735e'), desc: "Olma va nokdan tayyorlangan tabiiy bolalar pyuresi." },
+        { id: 51, name: "Nam salfetkalar (80 dona)", category: 'Bolalar', unit: '80 dona', price: 16000, oldPrice: 19000, discount: 16, rating: 4.8, inStock: true, emoji: '🧸', photo: uImg('1584308666744-24d5c474f2ae'), desc: "Nozik teri uchun spirtsiz yumshoq salfetkalar." },
+        { id: 52, name: "Bolalar shampuni", category: 'Bolalar', unit: '300 ml', price: 24500, oldPrice: 0, discount: 0, rating: 4.7, inStock: true, emoji: '🛁', photo: uImg('1556228578-0d85b1a4d571'), desc: "Ko'zni achitmaydigan yumshoq bolalar shampuni." },
+        { id: 53, name: "Bolalar pechenyasi", category: 'Bolalar', unit: '180 g', price: 13500, oldPrice: 15500, discount: 13, rating: 4.8, inStock: true, emoji: '🍪', photo: uImg('1558961363-fa8fdf82db35'), desc: "Sutli va tez eriydigan bolalar pechenyasi." },
+
+        // Muzlatilgan (5)
+        { id: 54, name: "Muzlatilgan chuchvara", category: 'Muzlatilgan', unit: '700 g', price: 42000, oldPrice: 49000, discount: 14, rating: 4.8, inStock: true, emoji: '🥟', photo: uImg('1534422298391-e4f8c172dddb'), desc: "Go'shtli xushbo'y chuchvara. Tez pishiriladigan taom." },
+        { id: 55, name: "Kartoshka fri", category: 'Muzlatilgan', unit: '750 g', price: 27500, oldPrice: 32000, discount: 14, rating: 4.7, inStock: true, emoji: '🍟', photo: uImg('1576107232684-1279f390859f'), desc: "Qarsildoq kartoshka fri bo'laklari." },
+        { id: 56, name: "Muzlatilgan sabzavot seti", category: 'Muzlatilgan', unit: '400 g', price: 16500, oldPrice: 0, discount: 0, rating: 4.7, inStock: true, emoji: '🥦', photo: uImg('1540420773420-3366772f4999'), desc: "Brokkoli, no'xat va sabzi aralashmasi." },
+        { id: 57, name: "Qaymoqli muzqaymoq", category: 'Muzlatilgan', unit: '500 g', price: 33000, oldPrice: 38000, discount: 13, rating: 4.9, inStock: true, emoji: '🍨', photo: uImg('1563805042-7684c019e1cb'), desc: "Oilaviy qadoqdagi qaymoqli muzqaymoq." },
+        { id: 58, name: "Manti yarim tayyor", category: 'Muzlatilgan', unit: '650 g', price: 39000, oldPrice: 0, discount: 0, rating: 4.7, inStock: true, emoji: '🥘', photo: uImg('1496116218417-1a781b1c416c'), desc: "Tez va mazali tushlik uchun muzlatilgan manti." },
+
+        // Sog'lom ovqat & Gigiyena (6)
+        { id: 59, name: "Suli yormasi (Ovsyan)", category: "Sog'lom ovqat & Gigiyena", unit: '500 g', price: 15500, oldPrice: 18500, discount: 16, rating: 4.9, inStock: true, emoji: '🥣', photo: uImg('1517673400267-0251440c45dc'), desc: "Sog'lom nonushta va bo'tqalar uchun tabiiy suli yormasi." },
+        { id: 60, name: "Chia urug'i organik", category: "Sog'lom ovqat & Gigiyena", unit: '200 g', price: 28500, oldPrice: 33000, discount: 14, rating: 4.8, inStock: true, emoji: '🌱', photo: uImg('1511690743698-d9d85f2fbf38'), desc: "Kletchatka va omega-3 ga boy chia urug'lari." },
+        { id: 61, name: "Zaytun yog'i Extra Virgin", category: "Sog'lom ovqat & Gigiyena", unit: '500 ml', price: 58000, oldPrice: 67000, discount: 13, rating: 4.9, inStock: true, emoji: '🫒', photo: uImg('1474979266404-7eaacbcd87c5'), desc: "Salatlar va sog'lom ovqatlanish uchun tabiiy zaytun yog'i." },
+        { id: 62, name: "Tish pastasi himoya", category: "Sog'lom ovqat & Gigiyena", unit: '100 ml', price: 21000, oldPrice: 0, discount: 0, rating: 4.8, inStock: true, emoji: '🪥', photo: uImg('1559591937-e68214357234'), desc: "Milk va tish emalini mustahkamlovchi pasta." },
+        { id: 63, name: "Suyuq qo'l sovuni", category: "Sog'lom ovqat & Gigiyena", unit: '500 ml', price: 17500, oldPrice: 20500, discount: 15, rating: 4.7, inStock: true, emoji: '🧴', photo: uImg('1584305574647-0cc949a2bb9f'), desc: "Yumshatuvchi ekstraktli kundalik qo'l sovuni." },
+        { id: 64, name: "Dush geli tetiklantiruvchi", category: "Sog'lom ovqat & Gigiyena", unit: '400 ml', price: 26000, oldPrice: 0, discount: 0, rating: 4.8, inStock: true, emoji: '🚿', photo: uImg('1608248597279-f99d160bfcbc'), desc: "Kundalik parvarish uchun tetik aromatik dush geli." }
+      ];
+
+      var BUNDLES = [
+        {
+          id: 'b-nonushta',
+          badge: "NONUSHTA TO'PLAMI",
+          title: "Sog'lom Nonushta To'plami",
+          desc: "Musaffo Sut 3.2%, Sariyog' 82.5%, Tuxum C0 va Suli yormasi.",
+          emoji: '🥐',
+          photo: uImg('1533089860892-a7c6f0a88666', 640),
+          productIds: [7, 9, 11, 59]
+        },
+        {
+          id: 'b-osh',
+          badge: 'MILLIY TAOM',
+          title: "Oila Kechki Ovqati & Osh",
+          desc: "Mol go'shti lahm, Devzira guruch, Qizil sabzi va Tandir patir non.",
+          emoji: '🍲',
+          photo: uImg('1586201375761-83865001e31c', 640),
+          productIds: [13, 31, 5, 19]
+        },
+        {
+          id: 'b-choy',
+          badge: 'MEHMONGA TAYYOR',
+          title: "Choyxo'rlik & Shirinliklar",
+          desc: "Qora bargli choy, Sutli shokolad, Yong'oqli pechenye va Olma sharbati.",
+          emoji: '🍵',
+          photo: uImg('1564890369478-c89ca6d9cde9', 640),
+          productIds: [37, 40, 41, 26]
+        },
+        {
+          id: 'b-tozalik',
+          badge: 'TOZA MUHIT',
+          title: "Uy Tozaligi & Gigiyena",
+          desc: "Kir yuvish geli, Idish yuvish vositasi, Yuzalar spreyi va Suyuq qo'l sovuni.",
+          emoji: '✨',
+          photo: uImg('1584622650111-993a426fbf0a', 640),
+          productIds: [43, 44, 45, 63]
+        }
+      ];
+
+      var BRANCHES = [
+        { id: 'yunusobod', district: 'Yunusobod', name: 'Korzinka Yunusobod Mega', address: "Amir Temur shoh ko'chasi, 107B", hours: '08:00 – 23:30', phone: '+998 78 140 14 01', x: 360, y: 80 },
+        { id: 'chilonzor', district: 'Chilonzor', name: 'Korzinka Chilonzor', address: "Bunyodkor shoh ko'chasi, 15", hours: '08:00 – 23:00', phone: '+998 78 140 14 02', x: 145, y: 235 },
+        { id: 'mirzo-ulugbek', district: "Mirzo Ulug'bek", name: "Korzinka Mirzo Ulug'bek", address: "Mustaqillik shoh ko'chasi, 94", hours: '08:00 – 23:00', phone: '+998 78 140 14 03', x: 555, y: 140 },
+        { id: 'yakkasaroy', district: 'Yakkasaroy', name: 'Korzinka Yakkasaroy', address: "Shota Rustaveli ko'chasi, 48", hours: '08:00 – 23:00', phone: '+998 78 140 14 04', x: 295, y: 225 },
+        { id: 'shayxontohur', district: 'Shayxontohur', name: 'Korzinka Shayxontohur', address: "Navoiy ko'chasi, 27", hours: '08:00 – 23:00', phone: '+998 78 140 14 05', x: 535, y: 240 },
+        { id: 'sergeli', district: 'Sergeli', name: 'Korzinka Sergeli', address: "Yangisaroy ko'chasi, 12", hours: '08:30 – 23:00', phone: '+998 78 140 14 06', x: 360, y: 345 }
+      ];
+
+      var VACANCIES = [
+        { id: 'v1', role: 'Kassir-operator', dept: 'Supermarket', salary: "4 800 000 – 6 500 000 so'm", schedule: '2/2 smena', desc: "Xaridorlarga tez va xushmuomala xizmat ko'rsatish, kassa hisob-kitoblari." },
+        { id: 'v2', role: 'Kuryer (Velosiped / Avto)', dept: 'Logistika', salary: "5 500 000 – 9 200 000 so'm", schedule: 'Moslashuvchan smena', desc: "Onlayn buyurtmalarni Toshkent tumanlari bo'ylab 35–50 daqiqada yetkazish." },
+        { id: 'v3', role: 'Ombor mutaxassisi', dept: 'Logistika', salary: "4 600 000 – 6 200 000 so'm", schedule: '2/2 smena', desc: "Mahsulotlarni qabul qilish, harorat rejimini nazorat qilish va buyurtma yig'ish." },
+        { id: 'v4', role: 'Frontend Dasturchi', dept: 'IT', salary: "12 000 000 – 18 000 000 so'm", schedule: 'Gibrid • Toshkent', desc: "Korzinka Go veb-platformasi va foydalanuvchi interfeyslarini rivojlantirish." },
+        { id: 'v5', role: 'Sifat nazoratchisi', dept: 'Supermarket', salary: "5 200 000 – 7 000 000 so'm", schedule: '5/2 ish haftasi', desc: "Meva-sabzavot, go'sht va sut mahsulotlarining yangiligi hamda sifatini tekshirish." },
+        { id: 'v6', role: 'Backend Muhandis', dept: 'IT', salary: "13 000 000 – 20 000 000 so'm", schedule: 'Gibrid • Toshkent', desc: "Buyurtmalar, kuryer marshrutlari va bonus tizimi servislarini qo'llab-quvvatlash." }
+      ];
+
+      var DEFAULT_ORDERS = [
+        {
+          id: 'KG-2019',
+          date: '20.11.2026',
+          status: 'Yetkazildi',
+          total: 158400,
+          items: [
+            { productId: 13, qty: 1 },
+            { productId: 7, qty: 2 },
+            { productId: 19, qty: 2 }
+          ]
+        },
+        {
+          id: 'KG-1984',
+          date: '14.11.2026',
+          status: 'Yetkazildi',
+          total: 109500,
+          items: [
+            { productId: 1, qty: 2 },
+            { productId: 37, qty: 1 },
+            { productId: 40, qty: 2 }
+          ]
+        }
+      ];
+
+      var DEFAULT_ADDRESSES = [
+        "Yunusobod 11-kvartal, Amir Temur ko'chasi, 42-uy",
+        "Chilonzor 5-kvartal, Bunyodkor shoh ko'chasi, 19-uy"
+      ];
+
+      // =====================================================================
+      // 3. STATE & SAFE LOCALSTORAGE PERSISTENCE
+      // =====================================================================
+      var FREE_DELIVERY_LIMIT = 150000;
+      var STANDARD_DELIVERY = 15000;
+      var PROMOS = {
+        KORZINKA26: { type: 'percent', value: 0.15, label: '-15% chegirma' },
+        MEGA50: { type: 'fixed', value: 25000, label: "-25 000 so'm chegirma" }
+      };
+
+      var state = {
+        district: 'Yunusobod',
+        activeTab: 'supermarket',
+        category: 'Barchasi',
+        sort: 'popular',
+        discountOnly: false,
+        inStockOnly: false,
+        search: '',
+        recentSearches: ['sut', 'olma', "go'sht"],
+        jobFilter: 'Barchasi',
+        selectedBranchId: 'yunusobod',
+        heroIndex: 0,
+        storyIndex: 0,
+        cart: {},
+        favorites: [1, 13, 37],
+        promoCode: '',
+        useBonus: false,
+        bonusBalance: 32500,
+        userName: 'Azizbek Karimov',
+        userPhone: '+998 90 987 65 43',
+        addresses: DEFAULT_ADDRESSES.slice(),
+        orders: DEFAULT_ORDERS.slice(),
+        turboSeconds: 4 * 3600 + 18 * 60 + 45
+      };
+
+      var toastTimeout = null;
+      var tickerInterval = null;
+      var heroAutoInterval = null;
+
+      function loadStateSafely() {
+        try {
+          var raw = window.localStorage.getItem('korzinka_go_platform_v3');
+          if (!raw) return;
+          var data = JSON.parse(raw);
+          if (!data || typeof data !== 'object') return;
+          if (data.district) state.district = String(data.district);
+          if (data.activeTab) state.activeTab = String(data.activeTab);
+          if (data.category) state.category = String(data.category);
+          if (data.sort) state.sort = String(data.sort);
+          if (typeof data.discountOnly === 'boolean') state.discountOnly = data.discountOnly;
+          if (typeof data.inStockOnly === 'boolean') state.inStockOnly = data.inStockOnly;
+          if (Array.isArray(data.recentSearches)) state.recentSearches = data.recentSearches.slice(0, 6);
+          if (data.selectedBranchId) state.selectedBranchId = String(data.selectedBranchId);
+          if (data.cart && typeof data.cart === 'object') state.cart = data.cart;
+          if (Array.isArray(data.favorites)) state.favorites = data.favorites;
+          if (typeof data.promoCode === 'string') state.promoCode = data.promoCode;
+          if (typeof data.useBonus === 'boolean') state.useBonus = data.useBonus;
+          if (typeof data.bonusBalance === 'number') state.bonusBalance = Math.max(0, data.bonusBalance);
+          if (typeof data.userName === 'string' && data.userName.trim()) state.userName = data.userName.trim();
+          if (typeof data.userPhone === 'string' && data.userPhone.trim()) state.userPhone = data.userPhone.trim();
+          if (Array.isArray(data.addresses) && data.addresses.length > 0) state.addresses = data.addresses;
+          if (Array.isArray(data.orders) && data.orders.length > 0) state.orders = data.orders;
+        } catch (e) {
+          // Ignore storage restrictions
+        }
+      }
+
+      function saveStateSafely() {
+        try {
+          window.localStorage.setItem(
+            'korzinka_go_platform_v3',
+            JSON.stringify({
+              district: state.district,
+              activeTab: state.activeTab,
+              category: state.category,
+              sort: state.sort,
+              discountOnly: state.discountOnly,
+              inStockOnly: state.inStockOnly,
+              recentSearches: state.recentSearches,
+              selectedBranchId: state.selectedBranchId,
+              cart: state.cart,
+              favorites: state.favorites,
+              promoCode: state.promoCode,
+              useBonus: state.useBonus,
+              bonusBalance: state.bonusBalance,
+              userName: state.userName,
+              userPhone: state.userPhone,
+              addresses: state.addresses,
+              orders: state.orders
+            })
+          );
+        } catch (e) {
+          // Ignore storage restrictions
+        }
+      }
+
+      function formatSum(val) {
+        var n = Math.round(Number(val) || 0);
+        return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + " so'm";
+      }
+
+      function formatTimer(secTotal) {
+        var s = Math.max(0, Math.floor(secTotal));
+        var h = Math.floor(s / 3600);
+        var m = Math.floor((s % 3600) / 60);
+        var sec = s % 60;
+        return [h, m, sec].map(function (v) { return String(v).padStart(2, '0'); }).join(':');
+      }
+
+      function getProductById(id) {
+        for (var i = 0; i < PRODUCTS.length; i++) {
+          if (PRODUCTS[i].id === Number(id)) return PRODUCTS[i];
+        }
+        return null;
+      }
+
+      function getProductFallbackUri(p) {
+        return makeProductSvgUri(p.category, p.name, p.emoji);
+      }
+
+      function getProductPhotoUrl(p) {
+        return p.photo || getProductFallbackUri(p);
+      }
+
+      function showToast(msg) {
+        var el = document.getElementById('toastNotification');
+        if (!el) return;
+        el.textContent = msg;
+        el.classList.remove('opacity-0', 'translate-y-3');
+        el.classList.add('opacity-100', 'translate-y-0');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(function () {
+          el.classList.remove('opacity-100', 'translate-y-0');
+          el.classList.add('opacity-0', 'translate-y-3');
+        }, 2500);
+      }
+
+      function bumpBadge(el) {
+        if (!el) return;
+        el.classList.remove('pop-bump');
+        void el.offsetWidth;
+        el.classList.add('pop-bump');
+      }
+
+      function copyToClipboardFallback(text) {
+        try {
+          var ta = document.createElement('textarea');
+          ta.value = String(text || '');
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        } catch (e) {
+          // Fallback ignored
+        }
+      }
+
+      // =====================================================================
+      // 4. CART, PROMO, BONUS & FAVORITES CALCULATIONS
+      // =====================================================================
+      function calculateCartTotals() {
+        var count = 0;
+        var subtotal = 0;
+        var ids = Object.keys(state.cart);
+        for (var i = 0; i < ids.length; i++) {
+          var pid = Number(ids[i]);
+          var qty = Number(state.cart[pid]) || 0;
+          if (qty <= 0) continue;
+          var p = getProductById(pid);
+          if (!p) continue;
+          count += qty;
+          subtotal += p.price * qty;
+        }
+
+        var code = String(state.promoCode || '').toUpperCase().trim();
+        var promoObj = PROMOS[code];
+        var promoDiscount = 0;
+        if (subtotal > 0 && promoObj) {
+          promoDiscount = promoObj.type === 'percent'
+            ? Math.round(subtotal * promoObj.value)
+            : Math.min(subtotal, promoObj.value);
+        }
+
+        var afterPromo = Math.max(0, subtotal - promoDiscount);
+        var bonusUsed = 0;
+        if (state.useBonus && afterPromo > 0 && state.bonusBalance > 0) {
+          bonusUsed = Math.min(state.bonusBalance, Math.floor(afterPromo * 0.5));
+        }
+
+        var afterDiscounts = Math.max(0, afterPromo - bonusUsed);
+        var delivery = subtotal === 0 ? 0 : (subtotal >= FREE_DELIVERY_LIMIT ? 0 : STANDARD_DELIVERY);
+        var grandTotal = afterDiscounts + delivery;
+
+        return {
+          count: count,
+          subtotal: subtotal,
+          promoDiscount: promoDiscount,
+          bonusUsed: bonusUsed,
+          delivery: delivery,
+          grandTotal: grandTotal,
+          promoObj: promoObj,
+          code: code
+        };
+      }
+
+      function adjustCartQty(productId, delta) {
+        var p = getProductById(productId);
+        if (!p) return;
+        var cur = Number(state.cart[productId]) || 0;
+        var next = cur + (Number(delta) || 0);
+        if (next <= 0) {
+          delete state.cart[productId];
+        } else {
+          state.cart[productId] = next;
+        }
+        saveStateSafely();
+        refreshUI(true);
+        if (delta > 0) {
+          showToast(p.name + " savatga qo'shildi");
+        }
+      }
+
+      function removeFromCart(productId) {
+        if (state.cart[productId]) {
+          delete state.cart[productId];
+          saveStateSafely();
+          refreshUI(true);
+        }
+      }
+
+      function toggleFavoriteItem(productId) {
+        var p = getProductById(productId);
+        if (!p) return;
+        var pos = state.favorites.indexOf(productId);
+        if (pos === -1) {
+          state.favorites.push(productId);
+          showToast(p.name + " sevimlilarga qo'shildi");
+        } else {
+          state.favorites.splice(pos, 1);
+          showToast(p.name + " sevimlilardan olib tashlandi");
+        }
+        saveStateSafely();
+        refreshUI(true);
+      }
+
+      function recordRecentSearch(queryText) {
+        var q = String(queryText || '').trim().toLowerCase();
+        if (q.length < 2) return;
+        var idx = state.recentSearches.indexOf(q);
+        if (idx !== -1) state.recentSearches.splice(idx, 1);
+        state.recentSearches.unshift(q);
+        state.recentSearches = state.recentSearches.slice(0, 6);
+        saveStateSafely();
+      }
+
+      // =====================================================================
+      // 5. RENDERERS FOR ALL 5 TABS, STORIES, HERO & 64 PRODUCTS
+      // =====================================================================
+      function renderHeaderBadges() {
+        var dDesk = document.getElementById('districtSelect');
+        var dMob = document.getElementById('mobileDistrictSelect');
+        if (dDesk) dDesk.value = state.district;
+        if (dMob) dMob.value = state.district;
+
+        var expDist = document.getElementById('expressDistrictName');
+        if (expDist) expDist.textContent = state.district;
+
+        var cabDist = document.getElementById('cabinetActiveDistrict');
+        if (cabDist) cabDist.textContent = state.district;
+
+        var plusPill = document.getElementById('headerBonusPill');
+        if (plusPill) plusPill.textContent = Math.round(state.bonusBalance).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+        var totals = calculateCartTotals();
+        var cBadge = document.getElementById('cartCountBadge');
+        var cTotal = document.getElementById('cartHeaderTotal');
+        var fBadge = document.getElementById('favCountBadge');
+
+        if (cBadge) {
+          var prevC = Number(cBadge.textContent) || 0;
+          cBadge.textContent = String(totals.count);
+          if (totals.count !== prevC) bumpBadge(cBadge);
+        }
+        if (cTotal) cTotal.textContent = formatSum(totals.grandTotal);
+        if (fBadge) {
+          var prevF = Number(fBadge.textContent) || 0;
+          fBadge.textContent = String(state.favorites.length);
+          if (state.favorites.length !== prevF) bumpBadge(fBadge);
+        }
+      }
+
+      function renderActiveTabView() {
+        var tabs = document.querySelectorAll('.portal-tab');
+        for (var i = 0; i < tabs.length; i++) {
+          var btn = tabs[i];
+          var isAct = btn.getAttribute('data-tab') === state.activeTab;
+          btn.className = isAct
+            ? 'portal-tab kg-btn shrink-0 rounded-xl bg-[#e11d48] px-3.5 py-2 text-xs font-extrabold text-white shadow-xs cursor-pointer'
+            : 'portal-tab kg-btn shrink-0 rounded-xl bg-[#f8f9fb] px-3.5 py-2 text-xs font-bold text-[#4b5563] hover:bg-[#fff1f2] hover:text-[#e11d48] cursor-pointer';
+        }
+
+        var views = document.querySelectorAll('.portal-view');
+        for (var j = 0; j < views.length; j++) {
+          var v = views[j];
+          var match = v.id === 'view-' + state.activeTab;
+          if (match) {
+            v.classList.remove('hidden');
+            v.classList.remove('view-reveal');
+            void v.offsetWidth;
+            v.classList.add('view-reveal');
+          } else {
+            v.classList.add('hidden');
+          }
+        }
+      }
+
+      function renderStoriesStrip() {
+        var strip = document.getElementById('storiesStrip');
+        if (!strip) return;
+        var html = '';
+        for (var i = 0; i < STORIES.length; i++) {
+          var st = STORIES[i];
+          var fallbackUri = makeProductSvgUri(st.category, st.title, st.emoji);
+          html +=
+            '<button type="button" data-story-idx="' + i + '" class="story-trigger kg-btn flex w-24 shrink-0 flex-col items-center gap-2 text-center cursor-pointer">' +
+            '<span class="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-tr from-[#e11d48] via-[#f43f5e] to-[#fb7185] p-[2.5px] shadow-xs">' +
+            '<img src="' + st.photo + '" ' + imgFallbackAttr(fallbackUri) + ' alt="' + escapeXml(st.title) + '" class="h-full w-full rounded-full bg-white object-cover" />' +
+            '</span>' +
+            '<span class="line-clamp-2 text-[11px] font-bold leading-tight text-[#111827]">' + escapeXml(st.title) + '</span>' +
+            '</button>';
+        }
+        strip.innerHTML = html;
+      }
+
+      function renderHeroCarousel() {
+        var content = document.getElementById('heroSlideContent');
+        var dots = document.getElementById('heroDots');
+        if (!content || !dots) return;
+
+        var total = HERO_SLIDES.length;
+        var idx = ((state.heroIndex % total) + total) % total;
+        var slide = HERO_SLIDES[idx];
+
+        content.innerHTML =
+          '<div class="view-reveal relative h-full min-h-[340px] w-full sm:min-h-[410px]">' +
+          '<img src="' + slide.photo + '" ' + imgFallbackAttr(slide.fallback) + ' alt="' + escapeXml(slide.title) + '" class="absolute inset-0 h-full w-full object-cover" />' +
+          '<div class="absolute inset-0 bg-gradient-to-r from-[#111827]/90 via-[#111827]/60 to-[#111827]/15"></div>' +
+          '<div class="relative z-10 flex h-full max-w-xl flex-col justify-center p-6 text-white sm:p-10">' +
+          '<span class="shimmer-badge w-fit rounded-full bg-[#e11d48] px-3 py-1 text-[10px] font-black uppercase tracking-wider text-white">' + escapeXml(slide.badge) + '</span>' +
+          '<h1 class="mt-3 text-2xl font-black leading-tight sm:text-4xl">' + escapeXml(slide.title) + '</h1>' +
+          '<p class="mt-2.5 text-xs leading-relaxed text-gray-100 sm:text-sm">' + escapeXml(slide.subtitle) + '</p>' +
+          '<div class="mt-5">' +
+          '<button type="button" id="heroSlideCta" class="kg-btn rounded-2xl bg-white px-5 py-3 text-xs font-black text-[#111827] shadow-md hover:bg-[#fff1f2] hover:text-[#e11d48] sm:text-sm cursor-pointer">' +
+          escapeXml(slide.cta) + ' →</button>' +
+          '</div>' +
+          '</div>' +
+          '</div>';
+
+        var ctaBtn = document.getElementById('heroSlideCta');
+        if (ctaBtn) {
+          ctaBtn.addEventListener('click', function () {
+            state.activeTab = slide.tab;
+            state.category = slide.category || 'Barchasi';
+            saveStateSafely();
+            refreshUI(false);
+          });
+        }
+
+        var dotsHtml = '';
+        for (var d = 0; d < total; d++) {
+          var act = d === idx;
+          dotsHtml +=
+            '<button type="button" data-hero-dot="' + d + '" aria-label="Slayd ' + (d + 1) + '" class="hero-dot-btn h-2.5 rounded-full transition-all cursor-pointer ' +
+            (act ? 'w-7 bg-[#e11d48]' : 'w-2.5 bg-white/60 hover:bg-white') +
+            '"></button>';
+        }
+        dots.innerHTML = dotsHtml;
+      }
+
+      function renderTurboCard() {
+        var turbo = getProductById(13) || PRODUCTS[0];
+        var img = document.getElementById('turboProductImg');
+        var title = document.getElementById('turboProductTitle');
+        var price = document.getElementById('turboProductPrice');
+        var oldPrice = document.getElementById('turboProductOldPrice');
+        var t1 = document.getElementById('turboCountdown');
+        var t2 = document.getElementById('promoTabTimer');
+
+        if (img && turbo) {
+          var fb = getProductFallbackUri(turbo);
+          img.onerror = function () {
+            img.onerror = null;
+            img.src = fb;
+          };
+          img.src = getProductPhotoUrl(turbo);
+        }
+        if (title && turbo) title.textContent = turbo.name + ' (' + turbo.unit + ')';
+        if (price && turbo) price.textContent = formatSum(turbo.price);
+        if (oldPrice && turbo) oldPrice.textContent = formatSum(turbo.oldPrice || 118000);
+        if (t1) t1.textContent = formatTimer(state.turboSeconds);
+        if (t2) t2.textContent = formatTimer(state.turboSeconds);
+      }
+
+      function renderCategoryBar() {
+        var box = document.getElementById('categoryPillsContainer');
+        if (!box) return;
+        var html = '';
+        for (var i = 0; i < CATEGORIES.length; i++) {
+          var c = CATEGORIES[i];
+          var act = state.category === c.id;
+          html +=
+            '<button type="button" data-cat-id="' + escapeXml(c.id) + '" class="cat-pill-btn kg-btn shrink-0 rounded-2xl px-3.5 py-2 text-xs font-bold cursor-pointer ' +
+            (act
+              ? 'bg-[#e11d48] text-white shadow-xs'
+              : 'border border-gray-200 bg-white text-[#4b5563] hover:border-rose-300 hover:bg-[#fff1f2] hover:text-[#e11d48]') +
+            '">' +
+            c.icon + ' ' + escapeXml(c.label) +
+            '</button>';
+        }
+        box.innerHTML = html;
+
+        var discBtn = document.getElementById('toggleDiscountOnlyBtn');
+        var stockBtn = document.getElementById('toggleInStockOnlyBtn');
+        var sortSel = document.getElementById('sortSelect');
+
+        if (discBtn) {
+          discBtn.className = state.discountOnly
+            ? 'kg-btn rounded-xl border border-[#e11d48] bg-[#e11d48] px-3 py-1.5 text-xs font-extrabold text-white cursor-pointer'
+            : 'kg-btn rounded-xl border border-gray-200 bg-white px-3 py-1.5 text-xs font-bold text-[#4b5563] hover:border-rose-300 hover:text-[#e11d48] cursor-pointer';
+        }
+        if (stockBtn) {
+          stockBtn.className = state.inStockOnly
+            ? 'kg-btn rounded-xl border border-[#10b981] bg-[#10b981] px-3 py-1.5 text-xs font-extrabold text-white cursor-pointer'
+            : 'kg-btn rounded-xl border border-emerald-200 bg-emerald-50/70 px-3 py-1.5 text-xs font-bold text-emerald-800 hover:bg-emerald-100 cursor-pointer';
+        }
+        if (sortSel) sortSel.value = state.sort;
+      }
+
+      function queryCatalog(forceDiscountOnly) {
+        var list = [];
+        var q = String(state.search || '').toLowerCase().trim();
+
+        for (var i = 0; i < PRODUCTS.length; i++) {
+          var p = PRODUCTS[i];
+          if (forceDiscountOnly) {
+            if (!p.discount || p.discount <= 0) continue;
+          } else {
+            if (state.category && state.category !== 'Barchasi' && p.category !== state.category) continue;
+            if (state.discountOnly && (!p.discount || p.discount <= 0)) continue;
+            if (state.inStockOnly && !p.inStock) continue;
+          }
+          if (q) {
+            var hay = (p.name + ' ' + p.category + ' ' + p.desc).toLowerCase();
+            if (hay.indexOf(q) === -1) continue;
+          }
+          list.push(p);
+        }
+
+        if (state.sort === 'price-asc') {
+          list.sort(function (a, b) { return a.price - b.price; });
+        } else if (state.sort === 'price-desc') {
+          list.sort(function (a, b) { return b.price - a.price; });
+        } else if (state.sort === 'discount-desc') {
+          list.sort(function (a, b) { return (b.discount || 0) - (a.discount || 0); });
+        }
+
+        return list;
+      }
+
+      function renderProductCard(p) {
+        var qty = Number(state.cart[p.id]) || 0;
+        var isFav = state.favorites.indexOf(p.id) !== -1;
+        var imgSrc = getProductPhotoUrl(p);
+        var fallbackUri = getProductFallbackUri(p);
+
+        var cartControl = qty <= 0
+          ? '<button type="button" data-add-prod="' + p.id + '" class="add-prod-btn kg-btn w-full rounded-xl bg-[#e11d48] py-2 text-xs font-extrabold text-white shadow-2xs hover:bg-[#be123c] cursor-pointer">+ Savatga</button>'
+          : '<div class="flex items-center justify-between rounded-xl border border-[#e11d48] bg-[#fff1f2] p-1 tabular-nums">' +
+            '<button type="button" data-step-prod="' + p.id + '" data-delta="-1" aria-label="Kamaytirish" class="step-prod-btn flex h-7 w-7 items-center justify-center rounded-lg bg-white text-sm font-black text-[#e11d48] hover:bg-rose-100 cursor-pointer">−</button>' +
+            '<span class="text-xs font-black text-[#111827]">' + qty + '</span>' +
+            '<button type="button" data-step-prod="' + p.id + '" data-delta="1" aria-label="Ko\'paytirish" class="step-prod-btn flex h-7 w-7 items-center justify-center rounded-lg bg-[#e11d48] text-sm font-black text-white hover:bg-[#be123c] cursor-pointer">+</button>' +
+            '</div>';
+
+        return (
+          '<article class="kg-card flex flex-col justify-between rounded-2xl border border-gray-200/90 bg-white p-3">' +
+          '<div>' +
+          '<div data-qv-prod="' + p.id + '" class="qv-prod-trigger relative h-36 w-full cursor-pointer overflow-hidden rounded-xl bg-[#f8f9fb]">' +
+          '<img src="' + imgSrc + '" ' + imgFallbackAttr(fallbackUri) + ' loading="lazy" alt="' + escapeXml(p.name) + '" class="kg-card-img h-full w-full object-cover" />' +
+          '<div class="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/25 to-transparent"></div>' +
+          (p.discount > 0
+            ? '<span class="pointer-events-none absolute left-2 top-2 rounded-lg bg-[#e11d48] px-2 py-0.5 text-[10px] font-black text-white shadow-2xs tabular-nums">-' + p.discount + '%</span>'
+            : '') +
+          '<button type="button" data-fav-prod="' + p.id + '" aria-label="Sevimlilar" class="fav-prod-btn kg-btn absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-white/95 text-sm shadow-2xs cursor-pointer ' +
+          (isFav ? 'text-[#e11d48]' : 'text-gray-400 hover:text-[#e11d48]') +
+          '">' + (isFav ? '♥' : '♡') + '</button>' +
+          '<span class="pointer-events-none absolute bottom-2 left-2 rounded-md bg-white/95 px-2 py-0.5 text-[10px] font-bold text-[#111827] shadow-2xs">' + escapeXml(p.unit) + '</span>' +
+          '</div>' +
+          '<div class="mt-2 flex items-center justify-between text-[10px] font-bold text-[#6b7280]">' +
+          '<span class="truncate">' + escapeXml(p.category) + '</span>' +
+          '<span class="shrink-0 text-[#f59e0b] tabular-nums">★ ' + p.rating.toFixed(1) + '</span>' +
+          '</div>' +
+          '<h3 data-qv-prod="' + p.id + '" class="qv-prod-trigger mt-0.5 line-clamp-2 cursor-pointer text-xs font-extrabold leading-snug text-[#111827] hover:text-[#e11d48]">' + escapeXml(p.name) + '</h3>' +
+          '</div>' +
+          '<div class="mt-3">' +
+          '<div class="min-h-[30px] tabular-nums">' +
+          (p.oldPrice && p.oldPrice > p.price
+            ? '<div class="text-[11px] font-medium text-[#6b7280] line-through">' + formatSum(p.oldPrice) + '</div>'
+            : '<div class="h-[15px]"></div>') +
+          '<div class="text-sm font-black text-[#111827]">' + formatSum(p.price) + '</div>' +
+          '</div>' +
+          '<div class="mt-2">' + cartControl + '</div>' +
+          '</div>' +
+          '</article>'
+        );
+      }
+
+      function renderProductsCatalog() {
+        var grid = document.getElementById('productsGrid');
+        var empty = document.getElementById('emptyProductsBox');
+        var countLbl = document.getElementById('productCountLabel');
+        var items = queryCatalog(false);
+
+        if (countLbl) countLbl.textContent = items.length + ' ta mahsulot';
+        if (!grid) return;
+
+        if (items.length === 0) {
+          grid.innerHTML = '';
+          if (empty) empty.classList.remove('hidden');
+          return;
+        }
+        if (empty) empty.classList.add('hidden');
+
+        var html = '';
+        for (var i = 0; i < items.length; i++) {
+          html += renderProductCard(items[i]);
+        }
+        grid.innerHTML = html;
+      }
+
+      function renderBundlesSection(containerId) {
+        var box = document.getElementById(containerId);
+        if (!box) return;
+        var html = '';
+
+        for (var i = 0; i < BUNDLES.length; i++) {
+          var b = BUNDLES[i];
+          var bundlePrice = 0;
+          var listHtml = '';
+          var bundleFallback = makeProductSvgUri("Uy-ro'zg'or", b.title, b.emoji);
+
+          for (var j = 0; j < b.productIds.length; j++) {
+            var prod = getProductById(b.productIds[j]);
+            if (!prod) continue;
+            bundlePrice += prod.price;
+            listHtml +=
+              '<div class="flex items-center justify-between gap-2 rounded-xl bg-[#f8f9fb] px-3 py-1.5 text-xs">' +
+              '<span class="truncate font-medium text-[#111827]">' + prod.emoji + ' ' + escapeXml(prod.name) + '</span>' +
+              '<span class="tabular-nums shrink-0 font-bold text-[#4b5563]">' + formatSum(prod.price) + '</span>' +
+              '</div>';
+          }
+
+          html +=
+            '<div class="kg-card flex flex-col justify-between rounded-2xl border border-gray-200/90 bg-white p-4 sm:p-5">' +
+            '<div>' +
+            '<div class="relative mb-3 h-32 w-full overflow-hidden rounded-xl bg-[#f8f9fb]">' +
+            '<img src="' + b.photo + '" ' + imgFallbackAttr(bundleFallback) + ' loading="lazy" alt="' + escapeXml(b.title) + '" class="kg-card-img h-full w-full object-cover" />' +
+            '<span class="absolute left-2.5 top-2.5 rounded-lg bg-white/95 px-2.5 py-0.5 text-[10px] font-black text-[#e11d48] shadow-2xs">' + escapeXml(b.badge) + '</span>' +
+            '</div>' +
+            '<h3 class="text-base font-extrabold text-[#111827]">' + escapeXml(b.title) + '</h3>' +
+            '<p class="mt-1 text-xs text-[#6b7280]">' + escapeXml(b.desc) + '</p>' +
+            '<div class="mt-3 space-y-1.5">' + listHtml + '</div>' +
+            '</div>' +
+            '<div class="mt-4 border-t border-gray-100 pt-3">' +
+            '<div class="mb-2.5 flex items-center justify-between tabular-nums">' +
+            '<span class="text-xs font-medium text-[#6b7280]">Jami to\'plam:</span>' +
+            '<span class="text-sm font-black text-[#111827]">' + formatSum(bundlePrice) + '</span>' +
+            '</div>' +
+            '<button type="button" data-bundle-idx="' + i + '" class="add-bundle-btn kg-btn w-full rounded-xl bg-[#e11d48] py-2.5 text-xs font-extrabold text-white hover:bg-[#be123c] cursor-pointer">' +
+            "To'plamni savatga qo'shish" +
+            '</button>' +
+            '</div>' +
+            '</div>';
+        }
+        box.innerHTML = html;
+      }
+
+      function renderPromoTabView() {
+        var grid = document.getElementById('promoProductsGrid');
+        var badge = document.getElementById('promoProductsBadge');
+        var promos = queryCatalog(true);
+
+        if (badge) badge.textContent = promos.length + ' ta';
+        if (grid) {
+          var html = '';
+          for (var i = 0; i < promos.length; i++) {
+            html += renderProductCard(promos[i]);
+          }
+          grid.innerHTML = html;
+        }
+        renderBundlesSection('promoBundlesGrid');
+      }
+
+      function renderBranchesMapView() {
+        var pinsLayer = document.getElementById('svgBranchPinsLayer');
+        var selectedCard = document.getElementById('selectedBranchCard');
+        var listBox = document.getElementById('branchesListBox');
+        var pinLabel = document.getElementById('activeMapPinLabel');
+        if (!pinsLayer || !selectedCard || !listBox) return;
+
+        var activeBranch = BRANCHES[0];
+        for (var i = 0; i < BRANCHES.length; i++) {
+          if (BRANCHES[i].id === state.selectedBranchId) {
+            activeBranch = BRANCHES[i];
+            break;
+          }
+        }
+        if (pinLabel) pinLabel.textContent = activeBranch.district + ' • ' + activeBranch.name;
+
+        selectedCard.innerHTML =
+          '<div class="flex items-start justify-between gap-2">' +
+          '<div>' +
+          '<span class="rounded-full bg-[#e11d48] px-2.5 py-0.5 text-[10px] font-black text-white">TANLANGAN FILIAL</span>' +
+          '<h3 class="mt-2 text-base font-black text-[#111827]">' + escapeXml(activeBranch.name) + '</h3>' +
+          '</div>' +
+          '<span class="rounded-xl bg-white px-2.5 py-1 text-xs font-extrabold text-[#10b981] border border-emerald-200">Ochiq</span>' +
+          '</div>' +
+          '<p class="mt-2 text-xs text-[#4b5563]">📍 ' + escapeXml(activeBranch.address) + '</p>' +
+          '<div class="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs font-bold text-[#111827]">' +
+          '<span>🕒 ' + escapeXml(activeBranch.hours) + '</span>' +
+          '<span class="text-[#e11d48]">📞 ' + escapeXml(activeBranch.phone) + '</span>' +
+          '</div>';
+
+        var pinsHtml = '';
+        var listHtml = '';
+
+        for (var j = 0; j < BRANCHES.length; j++) {
+          var br = BRANCHES[j];
+          var isSel = br.id === activeBranch.id;
+
+          pinsHtml +=
+            '<g data-branch-id="' + br.id + '" class="branch-select-trigger cursor-pointer">' +
+            (isSel ? '<circle cx="' + br.x + '" cy="' + br.y + '" r="22" fill="#e11d48" fill-opacity="0.2" />' : '') +
+            '<circle cx="' + br.x + '" cy="' + br.y + '" r="' + (isSel ? '11' : '8') + '" fill="' + (isSel ? '#e11d48' : '#ffffff') + '" stroke="#e11d48" stroke-width="3" />' +
+            '<rect x="' + (br.x - 48) + '" y="' + (br.y - 31) + '" width="96" height="18" rx="7" fill="' + (isSel ? '#111827' : '#ffffff') + '" stroke="' + (isSel ? '#111827' : '#e5e7eb') + '" />' +
+            '<text x="' + br.x + '" y="' + (br.y - 19) + '" text-anchor="middle" fill="' + (isSel ? '#ffffff' : '#111827') + '" font-size="9.5" font-weight="800">' + escapeXml(br.district) + '</text>' +
+            '</g>';
+
+          listHtml +=
+            '<div data-branch-id="' + br.id + '" class="branch-select-trigger cursor-pointer rounded-2xl border p-3.5 transition ' +
+            (isSel ? 'border-[#e11d48] bg-[#fff1f2]/50' : 'border-gray-200 bg-white hover:border-rose-300') +
+            '">' +
+            '<div class="flex items-center justify-between gap-2">' +
+            '<span class="text-xs font-extrabold text-[#111827]">' + escapeXml(br.name) + '</span>' +
+            '<span class="text-[11px] font-bold text-[#e11d48]">' + escapeXml(br.district) + '</span>' +
+            '</div>' +
+            '<div class="mt-1 text-[11px] text-[#6b7280]">' + escapeXml(br.address) + ' • ' + escapeXml(br.hours) + '</div>' +
+            '</div>';
+        }
+
+        pinsLayer.innerHTML = pinsHtml;
+        listBox.innerHTML = listHtml;
+      }
+
+      function renderVacanciesView() {
+        var grid = document.getElementById('vacanciesGrid');
+        if (!grid) return;
+
+        var filterBtns = document.querySelectorAll('.job-filter-btn');
+        for (var b = 0; b < filterBtns.length; b++) {
+          var fBtn = filterBtns[b];
+          var act = fBtn.getAttribute('data-job-cat') === state.jobFilter;
+          fBtn.className = act
+            ? 'job-filter-btn kg-btn rounded-xl bg-[#e11d48] px-3.5 py-2 text-xs font-extrabold text-white cursor-pointer'
+            : 'job-filter-btn kg-btn rounded-xl border border-gray-200 bg-white px-3.5 py-2 text-xs font-bold text-[#4b5563] hover:border-rose-300 cursor-pointer';
+        }
+
+        var html = '';
+        for (var i = 0; i < VACANCIES.length; i++) {
+          var v = VACANCIES[i];
+          if (state.jobFilter !== 'Barchasi' && v.dept !== state.jobFilter) continue;
+
+          html +=
+            '<div class="kg-card flex flex-col justify-between rounded-2xl border border-gray-200/90 bg-white p-5">' +
+            '<div>' +
+            '<div class="flex items-center justify-between gap-2">' +
+            '<span class="rounded-lg bg-[#fff1f2] px-2.5 py-0.5 text-[10px] font-black text-[#e11d48]">' + escapeXml(v.dept.toUpperCase()) + '</span>' +
+            '<span class="text-[11px] font-semibold text-[#6b7280]">' + escapeXml(v.schedule) + '</span>' +
+            '</div>' +
+            '<h3 class="mt-2.5 text-base font-extrabold text-[#111827]">' + escapeXml(v.role) + '</h3>' +
+            '<div class="tabular-nums mt-1 text-sm font-black text-[#10b981]">' + escapeXml(v.salary) + '</div>' +
+            '<p class="mt-2 text-xs leading-relaxed text-[#4b5563]">' + escapeXml(v.desc) + '</p>' +
+            '</div>' +
+            '<button type="button" data-vacancy-role="' + escapeXml(v.role) + '" class="apply-vacancy-btn kg-btn mt-4 w-full rounded-xl bg-[#e11d48] py-2.5 text-xs font-extrabold text-white hover:bg-[#be123c] cursor-pointer">' +
+            'Ariza topshirish' +
+            '</button>' +
+            '</div>';
+        }
+        grid.innerHTML = html;
+      }
+
+      function renderCabinetView() {
+        var bonusEl = document.getElementById('cabinetBonusBalance');
+        var ordEl = document.getElementById('cabinetOrdersTotal');
+        var favEl = document.getElementById('cabinetFavsTotal');
+        var cartEl = document.getElementById('cabinetCartTotal');
+        var addrBox = document.getElementById('savedAddressesList');
+        var ordList = document.getElementById('cabinetOrdersList');
+
+        var nameDisp = document.getElementById('cabinetUserNameDisplay');
+        var phoneDisp = document.getElementById('cabinetUserPhoneDisplay');
+        var initDisp = document.getElementById('cabinetUserInitials');
+        var nameInp = document.getElementById('cabinetProfileNameInput');
+        var phoneInp = document.getElementById('cabinetProfilePhoneInput');
+
+        if (nameDisp) nameDisp.textContent = state.userName;
+        if (phoneDisp) phoneDisp.textContent = state.userPhone;
+        if (nameInp && document.activeElement !== nameInp) nameInp.value = state.userName;
+        if (phoneInp && document.activeElement !== phoneInp) phoneInp.value = state.userPhone;
+        if (initDisp) {
+          var parts = state.userName.trim().split(/\s+/);
+          initDisp.textContent = ((parts[0] ? parts[0][0] : 'A') + (parts[1] ? parts[1][0] : 'K')).toUpperCase();
+        }
+
+        var totals = calculateCartTotals();
+        if (bonusEl) bonusEl.textContent = formatSum(state.bonusBalance);
+        if (ordEl) ordEl.textContent = String(state.orders.length);
+        if (favEl) favEl.textContent = String(state.favorites.length);
+        if (cartEl) cartEl.textContent = String(totals.count);
+
+        if (addrBox) {
+          var addrHtml = '';
+          for (var a = 0; a < state.addresses.length; a++) {
+            addrHtml +=
+              '<div class="flex items-center justify-between gap-2 rounded-xl border border-gray-100 bg-[#f8f9fb] px-3 py-2 text-xs">' +
+              '<span class="truncate font-medium text-[#111827]">📍 ' + escapeXml(state.addresses[a]) + '</span>' +
+              '<button type="button" data-addr-idx="' + a + '" class="use-addr-btn shrink-0 font-bold text-[#e11d48] hover:underline cursor-pointer">Tanlash</button>' +
+              '</div>';
+          }
+          addrBox.innerHTML = addrHtml;
+        }
+
+        if (ordList) {
+          var ordHtml = '';
+          for (var i = 0; i < state.orders.length; i++) {
+            var o = state.orders[i];
+            var ordParts = [];
+            for (var j = 0; j < o.items.length; j++) {
+              var it = o.items[j];
+              var prod = getProductById(it.productId);
+              if (prod) ordParts.push(prod.name + ' × ' + it.qty);
+            }
+
+            ordHtml +=
+              '<div class="rounded-2xl border border-gray-200 bg-[#f8f9fb] p-4">' +
+              '<div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-200/70 pb-2">' +
+              '<div>' +
+              '<span class="font-mono text-xs font-black text-[#111827]">#' + escapeXml(o.id) + '</span>' +
+              '<span class="ml-2 text-xs text-[#6b7280]">' + escapeXml(o.date) + '</span>' +
+              '</div>' +
+              '<span class="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-extrabold text-emerald-800">' + escapeXml(o.status) + '</span>' +
+              '</div>' +
+              '<p class="mt-2 text-xs text-[#4b5563]">' + escapeXml(ordParts.join(', ') || 'Mahsulotlar') + '</p>' +
+              '<div class="mt-3 flex flex-wrap items-center justify-between gap-2 tabular-nums">' +
+              '<span class="text-sm font-black text-[#111827]">' + formatSum(o.total) + '</span>' +
+              '<button type="button" data-reorder-idx="' + i + '" class="reorder-order-btn kg-btn rounded-xl bg-[#e11d48] px-3.5 py-2 text-xs font-extrabold text-white hover:bg-[#be123c] cursor-pointer">' +
+              'Qayta buyurtma berish' +
+              '</button>' +
+              '</div>' +
+              '</div>';
+          }
+          ordList.innerHTML = ordHtml;
+        }
+      }
+
+      function renderCartDrawerView() {
+        var totals = calculateCartTotals();
+        var pill = document.getElementById('drawerCartCountPill');
+        var itemsBox = document.getElementById('cartItemsContainer');
+        var footer = document.getElementById('cartSummaryFooter');
+        var delivLabel = document.getElementById('freeDeliveryLabel');
+        var delivPct = document.getElementById('freeDeliveryPercentLabel');
+        var delivBar = document.getElementById('freeDeliveryProgressBar');
+        var bonusLbl = document.getElementById('availableBonusLabel');
+        var bonusChk = document.getElementById('useBonusToggle');
+
+        if (pill) pill.textContent = totals.count + ' ta';
+        if (bonusLbl) bonusLbl.textContent = formatSum(state.bonusBalance);
+        if (bonusChk) bonusChk.checked = Boolean(state.useBonus);
+
+        var pct = Math.min(100, Math.round((totals.subtotal / FREE_DELIVERY_LIMIT) * 100));
+        if (delivBar) delivBar.style.width = pct + '%';
+        if (delivPct) delivPct.textContent = pct + '%';
+        if (delivLabel) {
+          if (totals.subtotal >= FREE_DELIVERY_LIMIT) {
+            delivLabel.innerHTML = '<span class="font-extrabold text-[#10b981]">Bepul yetkazish faol!</span>';
+          } else {
+            delivLabel.textContent = 'Bepul yetkazishgacha yana ' + formatSum(FREE_DELIVERY_LIMIT - totals.subtotal);
+          }
+        }
+
+        if (!itemsBox || !footer) return;
+        var keys = Object.keys(state.cart);
+        var activeIds = [];
+        for (var k = 0; k < keys.length; k++) {
+          if ((Number(state.cart[keys[k]]) || 0) > 0) activeIds.push(Number(keys[k]));
+        }
+
+        if (activeIds.length === 0) {
+          footer.classList.add('hidden');
+          itemsBox.innerHTML =
+            '<div class="flex h-full flex-col items-center justify-center py-14 text-center">' +
+            '<div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#fff1f2] text-2xl">🛒</div>' +
+            '<h3 class="mt-3 text-sm font-extrabold text-[#111827]">Savat bo\'sh</h3>' +
+            '<p class="mt-1 text-xs text-[#6b7280]">Katalogdan mahsulot yoki tayyor to\'plam qo\'shing.</p>' +
+            '</div>';
+          return;
+        }
+
+        footer.classList.remove('hidden');
+        var html = '';
+        for (var i = 0; i < activeIds.length; i++) {
+          var pid = activeIds[i];
+          var qty = Number(state.cart[pid]) || 0;
+          var p = getProductById(pid);
+          if (!p) continue;
+          var imgUri = getProductPhotoUrl(p);
+          var fbUri = getProductFallbackUri(p);
+
+          html +=
+            '<div class="flex items-center gap-3 rounded-2xl border border-gray-100 bg-[#f8f9fb] p-2.5">' +
+            '<img src="' + imgUri + '" ' + imgFallbackAttr(fbUri) + ' alt="' + escapeXml(p.name) + '" class="h-14 w-14 shrink-0 rounded-xl border border-gray-200 bg-white object-cover" />' +
+            '<div class="min-w-0 flex-1">' +
+            '<div class="truncate text-xs font-extrabold text-[#111827]">' + escapeXml(p.name) + '</div>' +
+            '<div class="text-[11px] text-[#6b7280] tabular-nums">' + escapeXml(p.unit) + ' • ' + formatSum(p.price) + '</div>' +
+            '<div class="mt-1.5 flex items-center justify-between tabular-nums">' +
+            '<div class="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-2 py-0.5">' +
+            '<button type="button" data-step-prod="' + p.id + '" data-delta="-1" class="step-prod-btn text-xs font-black text-[#e11d48] cursor-pointer">−</button>' +
+            '<span class="text-xs font-black text-[#111827]">' + qty + '</span>' +
+            '<button type="button" data-step-prod="' + p.id + '" data-delta="1" class="step-prod-btn text-xs font-black text-[#e11d48] cursor-pointer">+</button>' +
+            '</div>' +
+            '<span class="text-xs font-black text-[#111827]">' + formatSum(p.price * qty) + '</span>' +
+            '</div>' +
+            '</div>' +
+            '<button type="button" data-rem-prod="' + p.id + '" aria-label="O\'chirish" class="rem-prod-btn self-start rounded-lg p-1 text-xs font-bold text-[#6b7280] hover:bg-rose-100 hover:text-[#e11d48] cursor-pointer">✕</button>' +
+            '</div>';
+        }
+        itemsBox.innerHTML = html;
+
+        var promoInp = document.getElementById('promoCodeInput');
+        var promoMsg = document.getElementById('promoFeedbackMsg');
+        if (promoInp && state.promoCode) promoInp.value = state.promoCode;
+        if (promoMsg) {
+          if (totals.promoObj && totals.promoDiscount > 0) {
+            promoMsg.textContent = '✓ ' + totals.code + ' faol (' + totals.promoObj.label + ')';
+          } else if (state.promoCode && !totals.promoObj) {
+            promoMsg.textContent = 'Promokod topilmadi. KORZINKA26 yoki MEGA50 kiriting.';
+          } else {
+            promoMsg.textContent = '';
+          }
+        }
+
+        var subEl = document.getElementById('cartSubtotalAmount');
+        var pRow = document.getElementById('cartPromoDiscountRow');
+        var pAmt = document.getElementById('cartPromoDiscountAmount');
+        var bRow = document.getElementById('cartBonusUsedRow');
+        var bAmt = document.getElementById('cartBonusUsedAmount');
+        var delivAmt = document.getElementById('cartDeliveryAmount');
+        var grandEl = document.getElementById('cartGrandTotalAmount');
+
+        if (subEl) subEl.textContent = formatSum(totals.subtotal);
+        if (pRow && pAmt) {
+          if (totals.promoDiscount > 0) {
+            pRow.classList.remove('hidden');
+            pAmt.textContent = '-' + formatSum(totals.promoDiscount);
+          } else {
+            pRow.classList.add('hidden');
+          }
+        }
+        if (bRow && bAmt) {
+          if (totals.bonusUsed > 0) {
+            bRow.classList.remove('hidden');
+            bAmt.textContent = '-' + formatSum(totals.bonusUsed);
+          } else {
+            bRow.classList.add('hidden');
+          }
+        }
+        if (delivAmt) {
+          delivAmt.innerHTML = totals.delivery === 0
+            ? '<span class="font-extrabold text-[#10b981]">BEPUL</span>'
+            : formatSum(totals.delivery);
+        }
+        if (grandEl) grandEl.textContent = formatSum(totals.grandTotal);
+      }
+
+      function renderFavoritesDrawerView() {
+        var box = document.getElementById('favoritesItemsContainer');
+        if (!box) return;
+        if (!state.favorites || state.favorites.length === 0) {
+          box.innerHTML =
+            '<div class="flex h-full flex-col items-center justify-center py-14 text-center">' +
+            '<div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#fff1f2] text-2xl text-[#e11d48]">♥</div>' +
+            '<h3 class="mt-3 text-sm font-extrabold text-[#111827]">Sevimlilar ro\'yxati bo\'sh</h3>' +
+            '<p class="mt-1 text-xs text-[#6b7280]">Mahsulot kartasidagi ♥ belgisini bosib saqlang.</p>' +
+            '</div>';
+          return;
+        }
+
+        var html = '';
+        for (var i = 0; i < state.favorites.length; i++) {
+          var p = getProductById(state.favorites[i]);
+          if (!p) continue;
+          var imgUri = getProductPhotoUrl(p);
+          var fbUri = getProductFallbackUri(p);
+          html +=
+            '<div class="flex items-center gap-3 rounded-2xl border border-gray-100 bg-[#f8f9fb] p-2.5">' +
+            '<img src="' + imgUri + '" ' + imgFallbackAttr(fbUri) + ' alt="' + escapeXml(p.name) + '" class="h-14 w-14 shrink-0 rounded-xl border border-gray-200 bg-white object-cover" />' +
+            '<div class="min-w-0 flex-1">' +
+            '<div class="truncate text-xs font-extrabold text-[#111827]">' + escapeXml(p.name) + '</div>' +
+            '<div class="text-[11px] text-[#6b7280] tabular-nums">' + escapeXml(p.unit) + ' • ' + formatSum(p.price) + '</div>' +
+            '<div class="mt-2 flex items-center gap-2">' +
+            '<button type="button" data-add-prod="' + p.id + '" class="add-prod-btn kg-btn rounded-xl bg-[#e11d48] px-3 py-1 text-[11px] font-extrabold text-white hover:bg-[#be123c] cursor-pointer">+ Savatga</button>' +
+            '<button type="button" data-fav-prod="' + p.id + '" class="fav-prod-btn rounded-xl border border-gray-200 bg-white px-2.5 py-1 text-[11px] font-bold text-[#6b7280] hover:text-[#e11d48] cursor-pointer">O\'chirish</button>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+        }
+        box.innerHTML = html;
+      }
+
+      function refreshUI(keepScroll) {
+        renderHeaderBadges();
+        renderActiveTabView();
+        renderStoriesStrip();
+        renderHeroCarousel();
+        renderTurboCard();
+        renderCategoryBar();
+        renderProductsCatalog();
+        renderBundlesSection('bundlesGrid');
+        renderPromoTabView();
+        renderBranchesMapView();
+        renderVacanciesView();
+        renderCabinetView();
+        renderCartDrawerView();
+        renderFavoritesDrawerView();
+        if (!keepScroll && window.scrollY > 120) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+
+      // =====================================================================
+      // 6. SEARCH DROPDOWN, DRAWERS & MODALS
+      // =====================================================================
+      function renderSearchDropdown() {
+        var dd = document.getElementById('searchDropdown');
+        if (!dd) return;
+        var q = String(state.search || '').trim().toLowerCase();
+
+        if (!q) {
+          if (!state.recentSearches || state.recentSearches.length === 0) {
+            dd.classList.add('hidden');
+            return;
+          }
+          var chips = '';
+          for (var i = 0; i < state.recentSearches.length; i++) {
+            var term = state.recentSearches[i];
+            chips += '<button type="button" data-recent-q="' + escapeXml(term) + '" class="recent-search-chip rounded-xl border border-gray-200 bg-[#f8f9fb] px-3 py-1 text-xs font-bold text-[#4b5563] hover:border-rose-300 hover:bg-[#fff1f2] hover:text-[#e11d48] cursor-pointer">' + escapeXml(term) + '</button>';
+          }
+          dd.innerHTML =
+            '<div class="mb-2 text-[10px] font-black uppercase tracking-wider text-[#6b7280]">Oxirgi qidiruvlar</div>' +
+            '<div class="flex flex-wrap gap-1.5">' + chips + '</div>';
+          dd.classList.remove('hidden');
+          return;
+        }
+
+        var matches = [];
+        for (var j = 0; j < PRODUCTS.length && matches.length < 6; j++) {
+          var p = PRODUCTS[j];
+          if ((p.name + ' ' + p.category).toLowerCase().indexOf(q) !== -1) {
+            matches.push(p);
+          }
+        }
+
+        if (matches.length === 0) {
+          dd.innerHTML = '<div class="py-4 text-center text-xs font-semibold text-[#6b7280]">"' + escapeXml(q) + '" bo\'yicha mahsulot topilmadi</div>';
+          dd.classList.remove('hidden');
+          return;
+        }
+
+        var rows = '';
+        for (var m = 0; m < matches.length; m++) {
+          var item = matches[m];
+          rows +=
+            '<div data-qv-prod="' + item.id + '" class="qv-prod-trigger flex cursor-pointer items-center justify-between gap-3 rounded-xl p-2 hover:bg-[#f8f9fb]">' +
+            '<div class="flex min-w-0 items-center gap-2.5">' +
+            '<img src="' + getProductPhotoUrl(item) + '" ' + imgFallbackAttr(getProductFallbackUri(item)) + ' alt="' + escapeXml(item.name) + '" class="h-10 w-10 shrink-0 rounded-lg object-cover bg-[#f8f9fb]" />' +
+            '<div class="min-w-0">' +
+            '<div class="truncate text-xs font-extrabold text-[#111827]">' + escapeXml(item.name) + '</div>' +
+            '<div class="text-[10px] text-[#6b7280]">' + escapeXml(item.category) + ' • ' + escapeXml(item.unit) + '</div>' +
+            '</div>' +
+            '</div>' +
+            '<span class="tabular-nums shrink-0 text-xs font-black text-[#e11d48]">' + formatSum(item.price) + '</span>' +
+            '</div>';
+        }
+        dd.innerHTML = rows;
+        dd.classList.remove('hidden');
+      }
+
+      function openDrawerBox(drawerId, backdropId, panelId) {
+        var d = document.getElementById(drawerId);
+        var b = document.getElementById(backdropId);
+        var p = document.getElementById(panelId);
+        if (!d || !b || !p) return;
+        d.classList.remove('hidden');
+        requestAnimationFrame(function () {
+          b.classList.remove('opacity-0');
+          b.classList.add('opacity-100');
+          p.classList.remove('translate-x-full');
+          p.classList.add('translate-x-0');
+        });
+      }
+
+      function closeDrawerBox(drawerId, backdropId, panelId) {
+        var d = document.getElementById(drawerId);
+        var b = document.getElementById(backdropId);
+        var p = document.getElementById(panelId);
+        if (!d || !b || !p) return;
+        b.classList.remove('opacity-100');
+        b.classList.add('opacity-0');
+        p.classList.remove('translate-x-0');
+        p.classList.add('translate-x-full');
+        setTimeout(function () {
+          d.classList.add('hidden');
+        }, 260);
+      }
+
+      function openStoryModalBox(idx) {
+        var total = STORIES.length;
+        var safeIdx = ((idx % total) + total) % total;
+        state.storyIndex = safeIdx;
+        var st = STORIES[safeIdx];
+
+        var modal = document.getElementById('storyViewerModal');
+        var progRow = document.getElementById('storyProgressRow');
+        var tag = document.getElementById('storyTagPill');
+        var frame = document.getElementById('storyVisualFrame');
+        var head = document.getElementById('storyHeading');
+        var body = document.getElementById('storyBodyText');
+
+        if (progRow) {
+          var pHtml = '';
+          for (var i = 0; i < total; i++) {
+            pHtml +=
+              '<div class="h-1.5 flex-1 overflow-hidden rounded-full bg-gray-200">' +
+              '<div class="h-full bg-[#e11d48] transition-all duration-300" style="width:' + (i <= safeIdx ? '100%' : '0%') + '"></div>' +
+              '</div>';
+          }
+          progRow.innerHTML = pHtml;
+        }
+        if (tag) tag.textContent = st.tag;
+        if (frame) {
+          var fb = makeBannerSvgUri(st.tag, st.title, st.emoji + ' ' + st.category, safeIdx);
+          frame.innerHTML = '<img src="' + st.photo + '" ' + imgFallbackAttr(fb) + ' alt="' + escapeXml(st.title) + '" class="h-full w-full object-cover" />';
+        }
+        if (head) head.textContent = st.title;
+        if (body) body.textContent = st.desc;
+
+        if (modal) {
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+        }
+      }
+
+      function closeStoryModalBox() {
+        var m = document.getElementById('storyViewerModal');
+        if (m) {
+          m.classList.add('hidden');
+          m.classList.remove('flex');
+        }
+      }
+
+      function openQuickViewBox(productId) {
+        var p = getProductById(productId);
+        var modal = document.getElementById('quickViewModal');
+        var body = document.getElementById('quickViewBody');
+        if (!p || !modal || !body) return;
+
+        var qty = Number(state.cart[p.id]) || 0;
+        var isFav = state.favorites.indexOf(p.id) !== -1;
+        var imgSrc = getProductPhotoUrl(p);
+        var fbUri = getProductFallbackUri(p);
+
+        body.innerHTML =
+          '<div class="flex items-start justify-between gap-2">' +
+          '<div class="flex flex-wrap items-center gap-2">' +
+          '<span class="rounded-full bg-[#fff1f2] px-3 py-1 text-[11px] font-black text-[#e11d48]">' + escapeXml(p.category) + '</span>' +
+          '<span class="rounded-full bg-[#f8f9fb] px-2.5 py-1 text-[11px] font-bold text-[#4b5563]">' + escapeXml(p.unit) + '</span>' +
+          '<span class="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700">' + (p.inStock ? '✓ Omborda mavjud' : 'Tugagan') + '</span>' +
+          '</div>' +
+          '<button type="button" id="closeQvBtn" class="flex h-8 w-8 items-center justify-center rounded-full bg-[#f8f9fb] text-xs font-bold text-[#4b5563] hover:bg-[#e11d48] hover:text-white cursor-pointer">✕</button>' +
+          '</div>' +
+          '<div class="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-12">' +
+          '<div class="sm:col-span-5">' +
+          '<img src="' + imgSrc + '" ' + imgFallbackAttr(fbUri) + ' alt="' + escapeXml(p.name) + '" class="h-52 w-full rounded-2xl border border-gray-100 bg-[#f8f9fb] object-cover" />' +
+          '</div>' +
+          '<div class="flex flex-col justify-between sm:col-span-7">' +
+          '<div>' +
+          '<div class="text-xs font-bold text-[#f59e0b] tabular-nums">★ ' + p.rating.toFixed(1) + '</div>' +
+          '<h3 class="mt-1 text-xl font-black text-[#111827]">' + escapeXml(p.name) + '</h3>' +
+          '<p class="mt-2 text-xs leading-relaxed text-[#4b5563] sm:text-sm">' + escapeXml(p.desc) + '</p>' +
+          '<div class="mt-4 flex items-baseline gap-2.5 tabular-nums">' +
+          '<span class="text-2xl font-black text-[#111827]">' + formatSum(p.price) + '</span>' +
+          (p.oldPrice && p.oldPrice > p.price
+            ? '<span class="text-xs font-medium text-[#6b7280] line-through">' + formatSum(p.oldPrice) + '</span>'
+            : '') +
+          '</div>' +
+          '</div>' +
+          '<div class="mt-5 flex items-center gap-2">' +
+          (qty <= 0
+            ? '<button type="button" id="qvAddCartBtn" class="kg-btn flex-1 rounded-2xl bg-[#e11d48] py-3 text-xs font-black text-white hover:bg-[#be123c] cursor-pointer">+ Savatga</button>'
+            : '<div class="flex flex-1 items-center justify-between rounded-2xl border border-[#e11d48] bg-[#fff1f2] px-4 py-2 tabular-nums">' +
+              '<button type="button" id="qvDecBtn" class="text-base font-black text-[#e11d48] cursor-pointer">−</button>' +
+              '<span class="text-sm font-black text-[#111827]">' + qty + ' ta</span>' +
+              '<button type="button" id="qvIncBtn" class="text-base font-black text-[#e11d48] cursor-pointer">+</button>' +
+              '</div>') +
+          '<button type="button" id="qvFavBtn" class="kg-btn flex h-11 w-11 items-center justify-center rounded-2xl border border-gray-200 bg-white text-lg cursor-pointer ' +
+          (isFav ? 'text-[#e11d48]' : 'text-gray-400') +
+          '">' + (isFav ? '♥' : '♡') + '</button>' +
+          '</div>' +
+          '</div>' +
+          '</div>';
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+
+        var closeBtn = document.getElementById('closeQvBtn');
+        if (closeBtn) closeBtn.addEventListener('click', closeQuickViewBox);
+
+        var addBtn = document.getElementById('qvAddCartBtn');
+        if (addBtn) {
+          addBtn.addEventListener('click', function () {
+            adjustCartQty(p.id, 1);
+            openQuickViewBox(p.id);
+          });
+        }
+        var decBtn = document.getElementById('qvDecBtn');
+        if (decBtn) {
+          decBtn.addEventListener('click', function () {
+            adjustCartQty(p.id, -1);
+            openQuickViewBox(p.id);
+          });
+        }
+        var incBtn = document.getElementById('qvIncBtn');
+        if (incBtn) {
+          incBtn.addEventListener('click', function () {
+            adjustCartQty(p.id, 1);
+            openQuickViewBox(p.id);
+          });
+        }
+        var favBtn = document.getElementById('qvFavBtn');
+        if (favBtn) {
+          favBtn.addEventListener('click', function () {
+            toggleFavoriteItem(p.id);
+            openQuickViewBox(p.id);
+          });
+        }
+      }
+
+      function closeQuickViewBox() {
+        var m = document.getElementById('quickViewModal');
+        if (m) {
+          m.classList.add('hidden');
+          m.classList.remove('flex');
+        }
+      }
+
+      function openPlusModalBox() {
+        var valEl = document.getElementById('plusModalBonusVal');
+        if (valEl) valEl.textContent = formatSum(state.bonusBalance);
+        var m = document.getElementById('plusCardModal');
+        if (m) {
+          m.classList.remove('hidden');
+          m.classList.add('flex');
+        }
+      }
+
+      function closePlusModalBox() {
+        var m = document.getElementById('plusCardModal');
+        if (m) {
+          m.classList.add('hidden');
+          m.classList.remove('flex');
+        }
+      }
+
+      function renderOrderTrackerSteps(activeStep) {
+        var steps = [
+          { num: 1, title: 'Qabul qilindi', note: 'Tasdiqlandi' },
+          { num: 2, title: "Yig'ilmoqda", note: "Ombor / Do'kon" },
+          { num: 3, title: 'Kuryerda', note: "Yo'lda" },
+          { num: 4, title: 'Yetkazildi', note: '35–50 daq' }
+        ];
+        var box = document.getElementById('trackerStepsList');
+        if (!box) return;
+        var html = '';
+        for (var i = 0; i < steps.length; i++) {
+          var st = steps[i];
+          var done = st.num < activeStep;
+          var current = st.num === activeStep;
+          var badgeCls = done
+            ? 'bg-[#10b981] text-white'
+            : (current ? 'bg-[#e11d48] text-white' : 'bg-gray-200 text-[#6b7280]');
+          var labelCls = (done || current) ? 'font-extrabold text-[#111827]' : 'font-semibold text-[#6b7280]';
+          var noteText = done ? 'Bajarildi' : (current ? 'Faol holat' : st.note);
+          var noteCls = done ? 'text-[#10b981]' : (current ? 'text-[#e11d48]' : 'text-[#6b7280]');
+
+          html +=
+            '<div class="flex items-center gap-3 text-xs">' +
+            '<span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-black ' + badgeCls + '">' + st.num + '</span>' +
+            '<span class="' + labelCls + '">' + escapeXml(st.title) + '</span>' +
+            '<span class="ml-auto text-[11px] font-bold ' + noteCls + '">' + escapeXml(noteText) + '</span>' +
+            '</div>';
+        }
+        box.innerHTML = html;
+      }
+
+      function openCheckoutModalBox() {
+        var totals = calculateCartTotals();
+        if (totals.count <= 0) {
+          showToast("Savat bo'sh");
+          return;
+        }
+        var form = document.getElementById('checkoutForm');
+        var tracker = document.getElementById('checkoutTrackerView');
+        var nameInp = document.getElementById('checkoutFullName');
+        var phoneInp = document.getElementById('checkoutPhoneInput');
+        var addrInp = document.getElementById('checkoutAddressSelect');
+        var sumEl = document.getElementById('checkoutPayableSum');
+
+        if (form) form.classList.remove('hidden');
+        if (tracker) tracker.classList.add('hidden');
+        if (nameInp) nameInp.value = state.userName;
+        if (phoneInp) phoneInp.value = state.userPhone;
+        if (addrInp) addrInp.value = state.addresses[0] || (state.district + ' tumani');
+        if (sumEl) sumEl.textContent = formatSum(totals.grandTotal);
+
+        var m = document.getElementById('checkoutModal');
+        if (m) {
+          m.classList.remove('hidden');
+          m.classList.add('flex');
+        }
+      }
+
+      function closeCheckoutModalBox() {
+        var m = document.getElementById('checkoutModal');
+        if (m) {
+          m.classList.add('hidden');
+          m.classList.remove('flex');
+        }
+      }
+
+      function openVacancyModalBox(roleName) {
+        var titleEl = document.getElementById('vacancyModalRoleTitle');
+        var brSel = document.getElementById('vacancyBranchSelect');
+        var formPanel = document.getElementById('vacancyFormPanel');
+        var confPanel = document.getElementById('vacancyConfirmedPanel');
+
+        if (titleEl) titleEl.textContent = roleName;
+        if (brSel) brSel.value = state.district;
+        if (formPanel) formPanel.classList.remove('hidden');
+        if (confPanel) confPanel.classList.add('hidden');
+
+        var m = document.getElementById('vacancyModal');
+        if (m) {
+          m.classList.remove('hidden');
+          m.classList.add('flex');
+        }
+      }
+
+      function closeVacancyModalBox() {
+        var m = document.getElementById('vacancyModal');
+        if (m) {
+          m.classList.add('hidden');
+          m.classList.remove('flex');
+        }
+      }
+
+      // =====================================================================
+      // 7. EVENT LISTENERS & INITIALIZATION
+      // =====================================================================
+      function updateSearchText(text, originId) {
+        state.search = text;
+        var sDesk = document.getElementById('searchInput');
+        var sMob = document.getElementById('mobileSearchInput');
+        var clrD = document.getElementById('clearSearchBtn');
+        var clrM = document.getElementById('mobileClearSearchBtn');
+
+        if (sDesk && originId !== 'searchInput') sDesk.value = text;
+        if (sMob && originId !== 'mobileSearchInput') sMob.value = text;
+
+        var nonEmpty = Boolean(text && text.trim().length > 0);
+        if (clrD) clrD.classList.toggle('hidden', !nonEmpty);
+        if (clrM) clrM.classList.toggle('hidden', !nonEmpty);
+
+        renderProductsCatalog();
+        renderPromoTabView();
+        renderSearchDropdown();
+      }
+
+      function updateDistrictSelection(newDistrict) {
+        state.district = newDistrict;
+        for (var i = 0; i < BRANCHES.length; i++) {
+          if (BRANCHES[i].district === newDistrict) {
+            state.selectedBranchId = BRANCHES[i].id;
+            break;
+          }
+        }
+        saveStateSafely();
+        renderHeaderBadges();
+        renderBranchesMapView();
+      }
+
+      function attachListeners() {
+        var logoBtn = document.getElementById('brandLogoBtn');
+        if (logoBtn) {
+          logoBtn.addEventListener('click', function () {
+            state.activeTab = 'supermarket';
+            state.category = 'Barchasi';
+            state.discountOnly = false;
+            state.inStockOnly = false;
+            updateSearchText('', '');
+            saveStateSafely();
+            refreshUI(false);
+          });
+        }
+
+        var dDesk = document.getElementById('districtSelect');
+        var dMob = document.getElementById('mobileDistrictSelect');
+        if (dDesk) dDesk.addEventListener('change', function (e) { updateDistrictSelection(e.target.value); });
+        if (dMob) dMob.addEventListener('change', function (e) { updateDistrictSelection(e.target.value); });
+
+        var sDesk = document.getElementById('searchInput');
+        var sMob = document.getElementById('mobileSearchInput');
+        var clrD = document.getElementById('clearSearchBtn');
+        var clrM = document.getElementById('mobileClearSearchBtn');
+
+        if (sDesk) {
+          sDesk.addEventListener('focus', renderSearchDropdown);
+          sDesk.addEventListener('input', function (e) { updateSearchText(e.target.value, 'searchInput'); });
+          sDesk.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') recordRecentSearch(e.target.value);
+          });
+        }
+        if (sMob) {
+          sMob.addEventListener('input', function (e) { updateSearchText(e.target.value, 'mobileSearchInput'); });
+          sMob.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') recordRecentSearch(e.target.value);
+          });
+        }
+        if (clrD) clrD.addEventListener('click', function () { updateSearchText('', ''); });
+        if (clrM) clrM.addEventListener('click', function () { updateSearchText('', ''); });
+
+        document.addEventListener('click', function (e) {
+          var t = e.target;
+          if (!t) return;
+
+          var sc = document.getElementById('searchContainer');
+          var dd = document.getElementById('searchDropdown');
+          if (dd && sc && !sc.contains(t)) {
+            dd.classList.add('hidden');
+          }
+
+          var recentChip = t.closest('.recent-search-chip');
+          if (recentChip) {
+            var qVal = recentChip.getAttribute('data-recent-q') || '';
+            updateSearchText(qVal, '');
+            return;
+          }
+
+          var tabBtn = t.closest('.portal-tab');
+          if (tabBtn) {
+            var nextTab = tabBtn.getAttribute('data-tab');
+            if (nextTab) {
+              state.activeTab = nextTab;
+              saveStateSafely();
+              refreshUI(false);
+            }
+            return;
+          }
+
+          var storyTrig = t.closest('.story-trigger');
+          if (storyTrig) {
+            openStoryModalBox(Number(storyTrig.getAttribute('data-story-idx')) || 0);
+            return;
+          }
+
+          var dotBtn = t.closest('.hero-dot-btn');
+          if (dotBtn) {
+            state.heroIndex = Number(dotBtn.getAttribute('data-hero-dot')) || 0;
+            renderHeroCarousel();
+            return;
+          }
+
+          var catBtn = t.closest('.cat-pill-btn');
+          if (catBtn) {
+            state.category = catBtn.getAttribute('data-cat-id') || 'Barchasi';
+            saveStateSafely();
+            renderCategoryBar();
+            renderProductsCatalog();
+            return;
+          }
+
+          var favBtn = t.closest('.fav-prod-btn');
+          if (favBtn) {
+            e.stopPropagation();
+            var fId = Number(favBtn.getAttribute('data-fav-prod'));
+            if (fId) toggleFavoriteItem(fId);
+            return;
+          }
+
+          var addBtn = t.closest('.add-prod-btn');
+          if (addBtn) {
+            e.stopPropagation();
+            var aId = Number(addBtn.getAttribute('data-add-prod'));
+            if (aId) adjustCartQty(aId, 1);
+            return;
+          }
+
+          var stepBtn = t.closest('.step-prod-btn');
+          if (stepBtn) {
+            e.stopPropagation();
+            var stId = Number(stepBtn.getAttribute('data-step-prod'));
+            var dlt = Number(stepBtn.getAttribute('data-delta')) || 0;
+            if (stId && dlt) adjustCartQty(stId, dlt);
+            return;
+          }
+
+          var remBtn = t.closest('.rem-prod-btn');
+          if (remBtn) {
+            var rId = Number(remBtn.getAttribute('data-rem-prod'));
+            if (rId) removeFromCart(rId);
+            return;
+          }
+
+          var qvTrig = t.closest('.qv-prod-trigger');
+          if (qvTrig) {
+            var qId = Number(qvTrig.getAttribute('data-qv-prod'));
+            if (qId) openQuickViewBox(qId);
+            return;
+          }
+
+          var bBtn = t.closest('.add-bundle-btn');
+          if (bBtn) {
+            var bIdx = Number(bBtn.getAttribute('data-bundle-idx'));
+            var bundle = BUNDLES[bIdx];
+            if (bundle) {
+              for (var k = 0; k < bundle.productIds.length; k++) {
+                var pid = bundle.productIds[k];
+                state.cart[pid] = (Number(state.cart[pid]) || 0) + 1;
+              }
+              saveStateSafely();
+              refreshUI(true);
+              showToast(bundle.title + " savatga qo'shildi");
+            }
+            return;
+          }
+
+          var pBtn = t.closest('.promo-use-btn');
+          if (pBtn) {
+            var code = String(pBtn.getAttribute('data-promo') || '').toUpperCase();
+            if (code && PROMOS[code]) {
+              state.promoCode = code;
+              saveStateSafely();
+              copyToClipboardFallback(code);
+              renderCartDrawerView();
+              showToast(code + " nusxalandi va qo'llandi (" + PROMOS[code].label + ")");
+              openDrawerBox('cartDrawer', 'cartBackdrop', 'cartPanel');
+            }
+            return;
+          }
+
+          var brTrig = t.closest('.branch-select-trigger');
+          if (brTrig) {
+            var bId = brTrig.getAttribute('data-branch-id');
+            if (bId) {
+              state.selectedBranchId = bId;
+              for (var i = 0; i < BRANCHES.length; i++) {
+                if (BRANCHES[i].id === bId) {
+                  state.district = BRANCHES[i].district;
+                  break;
+                }
+              }
+              saveStateSafely();
+              renderHeaderBadges();
+              renderBranchesMapView();
+              showToast('Filial: ' + state.district);
+            }
+            return;
+          }
+
+          var jobFilterBtn = t.closest('.job-filter-btn');
+          if (jobFilterBtn) {
+            state.jobFilter = jobFilterBtn.getAttribute('data-job-cat') || 'Barchasi';
+            renderVacanciesView();
+            return;
+          }
+
+          var applyJobBtn = t.closest('.apply-vacancy-btn');
+          if (applyJobBtn) {
+            openVacancyModalBox(applyJobBtn.getAttribute('data-vacancy-role') || 'Vakansiya');
+            return;
+          }
+
+          var addrBtn = t.closest('.use-addr-btn');
+          if (addrBtn) {
+            var idx = Number(addrBtn.getAttribute('data-addr-idx'));
+            if (state.addresses[idx]) {
+              showToast('Manzil tanlandi: ' + state.addresses[idx]);
+            }
+            return;
+          }
+
+          var reorderBtn = t.closest('.reorder-order-btn');
+          if (reorderBtn) {
+            var oIdx = Number(reorderBtn.getAttribute('data-reorder-idx'));
+            var ord = state.orders[oIdx];
+            if (ord && Array.isArray(ord.items)) {
+              for (var m = 0; m < ord.items.length; m++) {
+                var item = ord.items[m];
+                state.cart[item.productId] = (Number(state.cart[item.productId]) || 0) + (Number(item.qty) || 1);
+              }
+              saveStateSafely();
+              refreshUI(true);
+              showToast('#' + ord.id + " mahsulotlari savatga qo'shildi");
+              openDrawerBox('cartDrawer', 'cartBackdrop', 'cartPanel');
+            }
+            return;
+          }
+        });
+
+        // Filter toggles & sort
+        var discToggle = document.getElementById('toggleDiscountOnlyBtn');
+        var stockToggle = document.getElementById('toggleInStockOnlyBtn');
+        var sortSel = document.getElementById('sortSelect');
+        var resetAll = document.getElementById('resetAllFiltersBtn');
+
+        if (discToggle) {
+          discToggle.addEventListener('click', function () {
+            state.discountOnly = !state.discountOnly;
+            saveStateSafely();
+            renderCategoryBar();
+            renderProductsCatalog();
+          });
+        }
+        if (stockToggle) {
+          stockToggle.addEventListener('click', function () {
+            state.inStockOnly = !state.inStockOnly;
+            saveStateSafely();
+            renderCategoryBar();
+            renderProductsCatalog();
+          });
+        }
+        if (sortSel) {
+          sortSel.addEventListener('change', function (e) {
+            state.sort = e.target.value;
+            saveStateSafely();
+            renderProductsCatalog();
+          });
+        }
+        if (resetAll) {
+          resetAll.addEventListener('click', function () {
+            state.category = 'Barchasi';
+            state.discountOnly = false;
+            state.inStockOnly = false;
+            state.sort = 'popular';
+            updateSearchText('', '');
+            saveStateSafely();
+            renderCategoryBar();
+            renderProductsCatalog();
+          });
+        }
+
+        // Hero prev/next & Turbo buttons
+        var hPrev = document.getElementById('heroPrevBtn');
+        var hNext = document.getElementById('heroNextBtn');
+        var tJump = document.getElementById('turboJumpBtn');
+        var tAdd = document.getElementById('turboAddBtn');
+
+        if (hPrev) hPrev.addEventListener('click', function () { state.heroIndex -= 1; renderHeroCarousel(); });
+        if (hNext) hNext.addEventListener('click', function () { state.heroIndex += 1; renderHeroCarousel(); });
+        if (tJump) {
+          tJump.addEventListener('click', function () {
+            state.activeTab = 'aksiyalar';
+            saveStateSafely();
+            refreshUI(false);
+          });
+        }
+        if (tAdd) tAdd.addEventListener('click', function () { adjustCartQty(13, 1); });
+
+        // Korzinka Plus modal triggers
+        var plusBtns = ['openPlusModalBtn', 'mobilePlusModalBtn', 'bentoPlusTrigger', 'cabinetPlusBtn'];
+        for (var p = 0; p < plusBtns.length; p++) {
+          var pEl = document.getElementById(plusBtns[p]);
+          if (pEl) pEl.addEventListener('click', openPlusModalBox);
+        }
+        var closePlus = document.getElementById('closePlusModalBtn');
+        var plusModal = document.getElementById('plusCardModal');
+        var copyPlus = document.getElementById('copyPlusNumberBtn');
+        if (closePlus) closePlus.addEventListener('click', closePlusModalBox);
+        if (plusModal) plusModal.addEventListener('click', function (e) { if (e.target === plusModal) closePlusModalBox(); });
+        if (copyPlus) {
+          copyPlus.addEventListener('click', function () {
+            copyToClipboardFallback('8600774020261414');
+            showToast('Karta raqami nusxalandi');
+          });
+        }
+
+        // Cart & Favorites Drawers
+        var openCart = document.getElementById('openCartBtn');
+        var closeCart = document.getElementById('closeCartBtn');
+        var cartBd = document.getElementById('cartBackdrop');
+        if (openCart) openCart.addEventListener('click', function () { renderCartDrawerView(); openDrawerBox('cartDrawer', 'cartBackdrop', 'cartPanel'); });
+        if (closeCart) closeCart.addEventListener('click', function () { closeDrawerBox('cartDrawer', 'cartBackdrop', 'cartPanel'); });
+        if (cartBd) cartBd.addEventListener('click', function () { closeDrawerBox('cartDrawer', 'cartBackdrop', 'cartPanel'); });
+
+        var openFav = document.getElementById('openFavoritesBtn');
+        var closeFav = document.getElementById('closeFavoritesBtn');
+        var favBd = document.getElementById('favoritesBackdrop');
+        if (openFav) openFav.addEventListener('click', function () { renderFavoritesDrawerView(); openDrawerBox('favoritesDrawer', 'favoritesBackdrop', 'favoritesPanel'); });
+        if (closeFav) closeFav.addEventListener('click', function () { closeDrawerBox('favoritesDrawer', 'favoritesBackdrop', 'favoritesPanel'); });
+        if (favBd) favBd.addEventListener('click', function () { closeDrawerBox('favoritesDrawer', 'favoritesBackdrop', 'favoritesPanel'); });
+
+        // Promo & Bonus in Cart
+        var applyPromo = document.getElementById('applyPromoBtn');
+        var bonusChk = document.getElementById('useBonusToggle');
+        if (applyPromo) {
+          applyPromo.addEventListener('click', function () {
+            var inp = document.getElementById('promoCodeInput');
+            state.promoCode = inp ? String(inp.value || '').toUpperCase().trim() : '';
+            saveStateSafely();
+            renderCartDrawerView();
+            if (PROMOS[state.promoCode]) showToast(state.promoCode + " qo'llandi");
+          });
+        }
+        if (bonusChk) {
+          bonusChk.addEventListener('change', function (e) {
+            state.useBonus = Boolean(e.target.checked);
+            saveStateSafely();
+            renderCartDrawerView();
+          });
+        }
+
+        // Story Modal controls
+        var stClose = document.getElementById('closeStoryViewerBtn');
+        var stPrev = document.getElementById('storyPrevBtn');
+        var stNext = document.getElementById('storyNextBtn');
+        var stJump = document.getElementById('storyJumpCategoryBtn');
+        var stModal = document.getElementById('storyViewerModal');
+        if (stClose) stClose.addEventListener('click', closeStoryModalBox);
+        if (stPrev) stPrev.addEventListener('click', function () { openStoryModalBox(state.storyIndex - 1); });
+        if (stNext) stNext.addEventListener('click', function () { openStoryModalBox(state.storyIndex + 1); });
+        if (stJump) {
+          stJump.addEventListener('click', function () {
+            var st = STORIES[state.storyIndex] || STORIES[0];
+            closeStoryModalBox();
+            state.activeTab = 'supermarket';
+            state.category = st.category || 'Barchasi';
+            state.discountOnly = Boolean(st.discountOnly);
+            saveStateSafely();
+            refreshUI(false);
+          });
+        }
+        if (stModal) stModal.addEventListener('click', function (e) { if (e.target === stModal) closeStoryModalBox(); });
+
+        // Quick-View backdrop close
+        var qvModal = document.getElementById('quickViewModal');
+        if (qvModal) qvModal.addEventListener('click', function (e) { if (e.target === qvModal) closeQuickViewBox(); });
+
+        // Checkout Modal & Order Creation
+        var openChk = document.getElementById('openCheckoutModalBtn');
+        var closeChk = document.getElementById('closeCheckoutModalBtn');
+        var chkModal = document.getElementById('checkoutModal');
+        var chkForm = document.getElementById('checkoutForm');
+        var goCabOrders = document.getElementById('goToCabinetOrdersBtn');
+        var doneChk = document.getElementById('doneCheckoutBtn');
+
+        if (openChk) openChk.addEventListener('click', openCheckoutModalBox);
+        if (closeChk) closeChk.addEventListener('click', closeCheckoutModalBox);
+        if (chkModal) chkModal.addEventListener('click', function (e) { if (e.target === chkModal) closeCheckoutModalBox(); });
+
+        if (chkForm) {
+          chkForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var totals = calculateCartTotals();
+            if (totals.count <= 0) return;
+
+            var orderedItems = [];
+            var ids = Object.keys(state.cart);
+            for (var i = 0; i < ids.length; i++) {
+              var pid = Number(ids[i]);
+              var q = Number(state.cart[pid]) || 0;
+              if (q > 0 && getProductById(pid)) {
+                orderedItems.push({ productId: pid, qty: q });
+              }
+            }
+
+            if (totals.bonusUsed > 0) {
+              state.bonusBalance = Math.max(0, state.bonusBalance - totals.bonusUsed);
+            }
+            var earned = Math.round(totals.grandTotal * 0.03);
+            state.bonusBalance += earned;
+
+            var code = 'KG-' + Math.floor(2100 + Math.random() * 7800);
+            state.orders.unshift({
+              id: code,
+              date: 'Bugun',
+              status: 'Kuryerda',
+              total: totals.grandTotal,
+              items: orderedItems
+            });
+
+            state.cart = {};
+            state.promoCode = '';
+            state.useBonus = false;
+            saveStateSafely();
+            refreshUI(true);
+
+            var formEl = document.getElementById('checkoutForm');
+            var trkEl = document.getElementById('checkoutTrackerView');
+            var codeEl = document.getElementById('confirmedOrderCode');
+            var distEl = document.getElementById('confirmedOrderDistrict');
+
+            if (formEl) formEl.classList.add('hidden');
+            if (trkEl) trkEl.classList.remove('hidden');
+            if (codeEl) codeEl.textContent = '#' + code;
+            if (distEl) distEl.textContent = state.district;
+            renderOrderTrackerSteps(2);
+
+            showToast('Buyurtma #' + code + ' rasmiylashtirildi! +' + formatSum(earned) + ' bonus');
+          });
+        }
+
+        if (goCabOrders) {
+          goCabOrders.addEventListener('click', function () {
+            closeCheckoutModalBox();
+            closeDrawerBox('cartDrawer', 'cartBackdrop', 'cartPanel');
+            state.activeTab = 'kabinetim';
+            saveStateSafely();
+            refreshUI(false);
+          });
+        }
+        if (doneChk) {
+          doneChk.addEventListener('click', function () {
+            closeCheckoutModalBox();
+            closeDrawerBox('cartDrawer', 'cartBackdrop', 'cartPanel');
+          });
+        }
+
+        // Profile editor in Kabinetim
+        var profForm = document.getElementById('cabinetProfileForm');
+        if (profForm) {
+          profForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var nInp = document.getElementById('cabinetProfileNameInput');
+            var pInp = document.getElementById('cabinetProfilePhoneInput');
+            if (nInp && nInp.value.trim()) state.userName = nInp.value.trim();
+            if (pInp && pInp.value.trim()) state.userPhone = pInp.value.trim();
+            saveStateSafely();
+            renderCabinetView();
+            showToast("Profil ma'lumotlari saqlandi");
+          });
+        }
+
+        // Address form in Kabinetim
+        var addrForm = document.getElementById('addAddressForm');
+        if (addrForm) {
+          addrForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var inp = document.getElementById('newAddressInput');
+            var val = inp ? inp.value.trim() : '';
+            if (!val) return;
+            state.addresses.unshift(val);
+            state.addresses = state.addresses.slice(0, 5);
+            inp.value = '';
+            saveStateSafely();
+            renderCabinetView();
+            showToast('Yangi manzil saqlandi');
+          });
+        }
+
+        // Vacancy Modal & Form
+        var closeVac = document.getElementById('closeVacancyModalBtn');
+        var closeVacDone = document.getElementById('closeVacancyDoneBtn');
+        var vacModal = document.getElementById('vacancyModal');
+        var vacForm = document.getElementById('vacancyApplyForm');
+
+        if (closeVac) closeVac.addEventListener('click', closeVacancyModalBox);
+        if (closeVacDone) closeVacDone.addEventListener('click', closeVacancyModalBox);
+        if (vacModal) vacModal.addEventListener('click', function (e) { if (e.target === vacModal) closeVacancyModalBox(); });
+
+        if (vacForm) {
+          vacForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var nameInp = document.getElementById('vacancyNameInput');
+            var brSel = document.getElementById('vacancyBranchSelect');
+            var roleTitle = document.getElementById('vacancyModalRoleTitle');
+            var formPanel = document.getElementById('vacancyFormPanel');
+            var confPanel = document.getElementById('vacancyConfirmedPanel');
+            var summaryEl = document.getElementById('vacancyConfirmSummary');
+
+            var applicant = nameInp ? nameInp.value.trim() : '';
+            var branch = brSel ? brSel.value : state.district;
+            var role = roleTitle ? roleTitle.textContent : 'Vakansiya';
+
+            if (summaryEl) {
+              summaryEl.textContent = (applicant ? applicant + ', ' : '') + role + ' (' + branch + ") bo'yicha arizangiz yuborildi.";
+            }
+            if (formPanel) formPanel.classList.add('hidden');
+            if (confPanel) confPanel.classList.remove('hidden');
+            vacForm.reset();
+            showToast('Ariza qabul qilindi!');
+          });
+        }
+
+        // ESC closes any modal or drawer
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') {
+            closeStoryModalBox();
+            closeQuickViewBox();
+            closePlusModalBox();
+            closeCheckoutModalBox();
+            closeVacancyModalBox();
+            closeDrawerBox('cartDrawer', 'cartBackdrop', 'cartPanel');
+            closeDrawerBox('favoritesDrawer', 'favoritesBackdrop', 'favoritesPanel');
+          }
+        });
+      }
+
+      function startClockTicker() {
+        clearInterval(tickerInterval);
+        tickerInterval = setInterval(function () {
+          if (state.turboSeconds > 0) {
+            state.turboSeconds -= 1;
+          } else {
+            state.turboSeconds = 4 * 3600 + 18 * 60 + 45;
+          }
+          var formatted = formatTimer(state.turboSeconds);
+          var t1 = document.getElementById('turboCountdown');
+          var t2 = document.getElementById('promoTabTimer');
+          if (t1) t1.textContent = formatted;
+          if (t2) t2.textContent = formatted;
+        }, 1000);
+
+        clearInterval(heroAutoInterval);
+        heroAutoInterval = setInterval(function () {
+          if (state.activeTab === 'supermarket') {
+            state.heroIndex += 1;
+            renderHeroCarousel();
+          }
+        }, 6500);
+      }
+
+      function initApp() {
+        loadStateSafely();
+        attachListeners();
+        refreshUI(true);
+        startClockTicker();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initApp);
+      } else {
+        initApp();
+      }
+    })();
+  </script>
+</body>
+</html>
